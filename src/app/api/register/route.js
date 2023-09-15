@@ -16,7 +16,7 @@ const User = mongoose.models.User || mongoose.model("User", userSchema);
 export async function POST(request) {
 
     try {
-        let conn = await mongoose.connect(process.env.MONGO_URI);
+        await mongoose.connect(process.env.MONGO_URI);
         let x =  await request.json();
 
         console.log(x.username);
@@ -26,7 +26,7 @@ export async function POST(request) {
         await newUser.save();
 
         mongoose.disconnect();
-        return NextResponse.json({ msg: 'This is a post request'}, {status: 200})
+        return NextResponse.json({ msg: 'Account Created'}, {status: 200})
     } catch (error) {
         console.log(error);
         return NextResponse.json({msg: 'Internal Server Error'}, {status: 500})
