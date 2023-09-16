@@ -6,10 +6,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { useTheme }  from '@mui/material/styles';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 
 const useStyles= (theme) => ({
@@ -39,6 +39,7 @@ export default function Login() {
 
     const theme = useTheme();
     const styles = useStyles(theme);
+    const router = useRouter();
 
     const [ username, SetUsername] = useState("");
     const [ password, SetPassword] = useState("");
@@ -59,9 +60,9 @@ export default function Login() {
         })
         .then(function (response) {
             if (response.status === 200){
-                alert("Logged In");
-                SetUsername("");
-                SetPassword("");
+                let id = response.data.msg[0];
+                let user = response.data.msg[1];
+                router.push(`/home/${user}`, { scroll: false })
             } else {
                 alert("Something went wrong");
             }

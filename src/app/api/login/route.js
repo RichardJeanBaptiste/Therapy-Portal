@@ -39,8 +39,9 @@ export async function POST(request) {
                 
             } else {
 
+                let res = [ findUser._id, findUser.username];
                 mongoose.disconnect();
-                return NextResponse.json({ msg: 'Account found'}, {status: 200})
+                return NextResponse.json({ msg: res}, {status: 200})
             }   
 
         } 
