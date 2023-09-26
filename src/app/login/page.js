@@ -31,6 +31,9 @@ const useStyles= (theme) => ({
       },
       textFieldStyle:{
         paddingBottom: '2em',
+      },
+      linkStyle: {
+        paddingRight: '20em',
       }
 })
 
@@ -83,7 +86,10 @@ export default function Login() {
                   <TextField  sx={styles.textFieldStyle} className='TextBox' id="outlined-basic" placeholder='Password' variant="outlined" onChange={handlePassword} value={password}/>
                   
                   <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-                    <Link href="/">Cancel</Link>
+                    <Box sx={styles.linkStyle}>
+                      <Link href="/" >Cancel</Link>
+                    </Box>
+                    
                     <Button variant="outlined" onClick={handleLogin}>Login</Button>
                   </Box>
                   

@@ -3,7 +3,9 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 
 export default function Homepage({ params }) {
@@ -13,24 +15,34 @@ export default function Homepage({ params }) {
     const [ excludeDates, SetExcludeDates ] = useState([]);
 
     useEffect(() => {
-        
+        axios.get('/api/getAllDate').then(function(response){
+            let temp = [];
+            
+            response.data[0].dates.map((x) => {
+                temp.push(new Date(x).toString());
+            })
+
+            SetExcludeDates(temp);
+        })
     },[]);
 
     const handleCurrentDate = (value) => {
-        // let temp = [value.$M, value.$D, value.$y]
-        // console.log(value.$d.toString());
         SetCurrentSelectedDate(value.$d.toString()); 
     }
 
+   
     const handleDateDisable = (value) => {
-        
-        // const excludeDates = [
-        //     new Date("Thu Sep 21 2023").toString(),
-        //     new Date("Tue Sep 19 2023").toString(),
-        //     "Sun Sep 10 2023 00:00:00 GMT-0400 (Eastern Daylight Time)",
-        // ]
 
+         /**
+         * Maps Over all Calender dates with shouldDisableDateProp.
+         * Excludes dates in given array
+         */
+        
         return excludeDates.includes(value.$d.toString());
+    }
+
+    const handleReserveDate = () => {
+        
     }
 
     return (
@@ -42,6 +54,8 @@ export default function Homepage({ params }) {
                     shouldDisableDate={handleDateDisable}
                 />
             </LocalizationProvider>
+
+            <Button onClick={handleReserveDate}>Reserve</Button>
         </div>
     )
 }

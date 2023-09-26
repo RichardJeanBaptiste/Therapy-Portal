@@ -11,13 +11,18 @@ const calSchema = new mongoose.Schema({
 const calenders = mongoose.models.calenders || mongoose.model("calenders", calSchema, "calendars");
 
 
-export async function GET(request) {
+export async function POST(request) {
     try {
         await mongoose.connect(process.env.MONGO_URI);
 
-        let x = await calenders.find({});
+        let x = await request.json();
 
-        return NextResponse.json(x)
+        let user =  x.user;
+        let date = x.date;
+
+        //let newDate = new calenders.save()
+
+        return NextResponse.json({ "user": user, "date": date})
     } catch (error) {
         
     }

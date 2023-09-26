@@ -6,6 +6,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import FormControl  from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem  from '@mui/material/MenuItem';
 import { useTheme }  from '@mui/material/styles';
 import axios from 'axios';
 import Link from 'next/link';
@@ -40,6 +44,7 @@ export default function Registration() {
 
     const [ username, SetUsername] = useState("");
     const [ password, SetPassword] = useState("");
+    const [ role, setRole] = useState("");
   
     const handleUsername = (e) => {
       SetUsername(e.target.value);
@@ -48,18 +53,24 @@ export default function Registration() {
     const handlePassword = (e) => {
       SetPassword(e.target.value);
     }
+
+    const handleRoleChange= (e) => {
+      setRole(e.target.value);
+    }
   
     const handleRegister  = () => {
 
         axios.post('/api/register', {
             username: username,
-            password: password
+            password: password,
+            role: role
           })
           .then(function (response) {
             if (response.status === 200){
                 alert("Account Created");
                 SetUsername("");
                 SetPassword("");
+                router.push('/login', { scroll: false })
             } else {
                 alert("Something went wrong");
             }
@@ -76,7 +87,21 @@ export default function Registration() {
               <CardContent>
                 <form style={styles.formStyle}>
                   <TextField  sx={styles.textFieldStyle} id="outlined-basic" placeholder='Username' variant="outlined" onChange={handleUsername} value={username}/>
-                  <TextField  sx={styles.textFieldStyle} className='TextBox' id="outlined-basic" placeholder='Password' variant="outlined" onChange={handlePassword} value={password}/>
+                  <TextField  sx={styles.textFieldStyle} className='TextBox' id="outlined-basic" placeholder='Password' type='password' variant="outlined" onChange={handlePassword} value={password}/>
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                    <Select
+                      labelId="Role"
+                      id="Role"
+                      value={role}
+                      label="Role"
+                      required
+                      onChange={handleRoleChange}
+                    >
+                      <MenuItem value="Therapist">Therapist</MenuItem>
+                      <MenuItem value="Client">Client</MenuItem>
+                    </Select>
+                  </FormControl>
                   
                   <Box sx={{ display: 'flex', flexDirection: 'row'}}>
                     <Link href="/">Cancel</Link>
