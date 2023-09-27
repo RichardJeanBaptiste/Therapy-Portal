@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -15,15 +16,15 @@ export default function Homepage({ params }) {
     const [ excludeDates, SetExcludeDates ] = useState([]);
 
     useEffect(() => {
-        axios.get('/api/getAllDate').then(function(response){
-            let temp = [];
+        // axios.get('/api/getAllDate').then(function(response){
+        //     let temp = [];
             
-            response.data[0].dates.map((x) => {
-                temp.push(new Date(x).toString());
-            })
+        //     response.data[0].dates.map((x) => {
+        //         temp.push(new Date(x).toString());
+        //     })
 
-            SetExcludeDates(temp);
-        })
+        //     SetExcludeDates(temp);
+        // })
     },[]);
 
     const handleCurrentDate = (value) => {
@@ -48,14 +49,18 @@ export default function Homepage({ params }) {
     return (
         <div>
             <h3>User: {params.id}</h3>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateCalendar 
-                    onChange={handleCurrentDate} // value.$D
-                    shouldDisableDate={handleDateDisable}
-                />
-            </LocalizationProvider>
+            <Box sx={{ display: 'flex', flexDirection: 'row'}}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateCalendar 
+                        onChange={handleCurrentDate} // value.$D
+                        shouldDisableDate={handleDateDisable}
+                        disablePast = {true}
+                    />
+                </LocalizationProvider>
 
-            <Button onClick={handleReserveDate}>Reserve</Button>
+                <Button onClick={handleReserveDate}>Reserve</Button>
+            </Box>
+            
         </div>
     )
 }

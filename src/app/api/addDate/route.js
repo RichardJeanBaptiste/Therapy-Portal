@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import 'dotenv/config';
+import { therapists, clients } from '../../Schemas/UserSchemas';
+import { ObjectId } from "mongodb";
 
 
 const calSchema = new mongoose.Schema({
@@ -20,7 +22,16 @@ export async function POST(request) {
         let user =  x.user;
         let date = x.date;
 
-        //let newDate = new calenders.save()
+        
+
+        let query = therapists.where({ Username : user });
+        let findQuery = await query.findOne();
+
+        let temp = findQuery.DatesAvailable;
+        temp.push(date);
+
+        findQuery.DatesAvailable = temp;
+        await findQuery.save();
 
         return NextResponse.json({ "user": user, "date": date})
     } catch (error) {

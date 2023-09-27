@@ -1,15 +1,30 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import 'dotenv/config';
+import { User, therapists, clients } from '../../Schemas/UserSchemas';
 
-const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-})
+async function findUser(userQuery, queryUsername, queryPassword){
 
-//userSchema.pre - check if username exists 
+    if(userQuery === null){
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+        mongoose.disconnect();
+        return NextResponse.json({ msg: 'User not found'}, {status: 404})
+
+    } else {
+
+        if(userQuery.Password !== queryPassword){
+
+            mongoose.disconnect();
+            return NextResponse.json({ msg: 'User not found'}, {status: 404})
+            
+        } else {
+
+            let res = [ userQuery._id, userQuery.Username];
+            mongoose.disconnect();
+            return NextResponse.json({ msg: res}, {status: 200})
+        }   
+    } 
+}
 
 export async function POST(request) {
 
@@ -21,33 +36,28 @@ export async function POST(request) {
 
         let queryUsername = data.username;
         let queryPassword = data.password;
+        let queryRole = data.role;
 
-        let query = User.where({ username: queryUsername});
-        let findUser = await query.findOne();
+        //return NextResponse.json({data}, {status: 200})
 
-        if(findUser === null){
+        if(queryRole === "Therapist"){
 
-            mongoose.disconnect();
-            return NextResponse.json({ msg: 'User not found'}, {status: 404})
+            let query = therapists.where({ Username: queryUsername});
+            let userQuery = await query.findOne();
 
+            return findUser(userQuery, queryUsername, queryPassword);
+        } else if(queryRole === "Client") {
+            let query = clients.where({ Username: queryUsername});
+            let userQuery = await query.findOne();
+
+            return findUser(userQuery, queryUsername, queryPassword);
         } else {
-
-            if(findUser.password !== queryPassword){
-
-                mongoose.disconnect();
-                return NextResponse.json({ msg: 'User not found'}, {status: 404})
-                
-            } else {
-
-                let res = [ findUser._id, findUser.username];
-                mongoose.disconnect();
-                return NextResponse.json({ msg: res}, {status: 200})
-            }   
-
-        } 
+            return NextResponse.json({ msg: 'Role not chosen'}, {status: 404})
+        }
                 
     } catch (error) {
         console.log(error);
+        return NextResponse.json({ msg: 'Server Error'}, {status: 500})
     }
     
 }
