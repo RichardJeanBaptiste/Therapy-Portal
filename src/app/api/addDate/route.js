@@ -4,6 +4,8 @@ import 'dotenv/config';
 import { therapists, clients, calenders } from '../../Schemas/UserSchemas';
 
 
+
+
 export async function POST(request) {
     try {
         await mongoose.connect(process.env.MONGO_URI);
