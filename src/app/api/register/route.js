@@ -43,7 +43,12 @@ export async function POST(request) {
                 Role: x.role,
                 DatesAvailable: [],
                 Clients: [],
-                Info: [],
+                Info: {
+                    Name: "",
+                    Age: "",
+                    Speciality: "",
+                    Bio: ""
+                },
             })
 
             await newTherapist.save();
@@ -57,7 +62,11 @@ export async function POST(request) {
                 Role: x.role,
                 DatesReserved: [],
                 Therapists: [],
-                Info: [],
+                Info: {
+                    Name: "",
+                    Age: "",
+                    Bio: ""
+                },
             })
 
             await newClient.save();
