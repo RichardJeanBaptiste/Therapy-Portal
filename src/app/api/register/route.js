@@ -1,34 +1,8 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import 'dotenv/config';
-import { User, therapists, clients } from '../../Schemas/UserSchemas';
+import { therapists, clients } from '../../Schemas/UserSchemas';
 
-
-/**
- * 
- * const userSchema = new mongoose.Schema({
-        username: String,
-        password: String,
-    })
-
-    const TherapistSchema = new mongoose.Schema({
-        Username: String,
-        Password: String,
-        Role: String,
-        DatesAvailable: Array,
-        Clients: Array,
-        Info: Array,
-    })
-
-    const ClientSchema = new mongoose.Schema({
-        Username: String,
-        Password: String,
-        Role: String,
-        DatesReserved: Array,
-        Therapists: Array,
-        Info: Array,
-    })
- */
 
 export async function POST(request) {
 
@@ -44,16 +18,19 @@ export async function POST(request) {
                 DatesAvailable: [],
                 Clients: [],
                 Info: {
-                    Name: "",
-                    Age: "",
-                    Speciality: "",
-                    Bio: ""
+                    Name: x.name,
+                    Age: x.age,
+                    Speciality: x.specialty,
+                    Bio: x.bio,
+                    Education: x.education,
+                    YearsWorking: x.yearsWorking
                 },
             })
 
             await newTherapist.save();
             mongoose.disconnect();
-            return NextResponse.json({ msg: 'Account Created'}, {status: 200})
+            return NextResponse.redirect("http://localhost:3000/login")
+            //return NextResponse.json({ msg: 'Account Created'}, {status: 200})
         } else if(x.role === "Client") {
 
             let newClient = new clients({
@@ -78,14 +55,6 @@ export async function POST(request) {
             return NextResponse.json({ msg: 'Role Not Chosen'}, {status: 404})
         }
 
-        // console.log(x.username);
-        // console.log(x.password);
-
-        // let newUser = new User({ username: x.username, password: x.password});
-        // await newUser.save();
-
-        // mongoose.disconnect();
-        // return NextResponse.json({ msg: 'Account Created'}, {status: 200})
     } catch (error) {
         console.log(error);
         return NextResponse.json({msg: 'Internal Server Error'}, {status: 500})
