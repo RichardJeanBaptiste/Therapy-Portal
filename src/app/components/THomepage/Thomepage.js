@@ -56,11 +56,11 @@ export default function Thomepage(props) {
     
     if(displayName === "Profile"){
       return (
-        <ShowProfile/>
+        <ShowProfile username={props.id}/>
       )
     } else if(displayName === "Calender") {
       return (
-        <ShowCalender/>
+        <ShowCalender username={props.id}/>
       )
     } else if(displayName === "Clients") {
       return (

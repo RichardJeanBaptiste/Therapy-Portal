@@ -1,25 +1,42 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import 'dotenv/config';
-import { therapists } from '../../../Schemas/UserSchemas';
+import { therapists, clients } from '../../../Schemas/UserSchemas';
 
 export async function POST(request) {
-    
+
     try {
+
         await mongoose.connect(process.env.MONGO_URI);
         let data = await request.json();
 
+        let queryDate = data.newDate;
         let queryTherapist = data.therapist;
-        let clientUsername = data.client;
+        let queryClient = data.client;
 
         let query = therapists.where({ Username: queryTherapist});
         let userQuery = await query.findOne();
 
-        userQuery.Clients.push(clientUsername);
-        await userQuery.save();
+        if(userQuery === null){
+            mongoose.disconnect();
+            return NextResponse.json({ "msg": "Therapist not found"});
+        } else {
 
-        return NextResponse.json({ "msg": "Client Added"});
+            // Add to Clients
+            if(userQuery.Clients.includes(queryClient) === false){
+                userQuery.Clients.push(queryClient);
+            } 
+
+            // add to scheduled dates
+            userQuery.DatesScheduled.push(queryDate);
+            await userQuery.save();
+
+            mongoose.disconnect();
+            return NextResponse.json({"msg": `Date: ${queryDate} Reserved`});
+
+        }
+        
     } catch (error) {
-        return NextResponse.json({"msg": "Server Error"});
+        return NextResponse.json({ "msg" : error });
     }
 }

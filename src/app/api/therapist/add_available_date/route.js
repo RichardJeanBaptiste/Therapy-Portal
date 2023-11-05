@@ -15,6 +15,7 @@ export async function POST(request){
         let userQuery = await query.findOne();
 
         if(userQuery.DatesAvailable.includes(queryDate)){
+
             mongoose.disconnect();
             return NextResponse.json({ "msg": "Date already available"});
         } else {
@@ -23,10 +24,6 @@ export async function POST(request){
             mongoose.disconnect();
             return NextResponse.json({ "msg" : "Date made available"});
         }
-
-        
-
-       
 
     } catch (error) {
         
