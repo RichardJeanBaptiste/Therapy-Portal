@@ -3,7 +3,7 @@ import { useStateValue } from './DateProvider';
 
 export default function Month() {
 
-    const { state, setState, pfunction } = useStateValue();
+    const { state, setState, currentDate } = useStateValue();
 
     const handleClick = () => {
         setState("check child click")
@@ -11,8 +11,8 @@ export default function Month() {
 
     return (
         <>
+            <div>{currentDate}</div>
             <div onClick={handleClick}>{state}</div>
-            <button onClick={pfunction}>test</button>
         </>
         
     )
