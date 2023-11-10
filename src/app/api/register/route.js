@@ -29,8 +29,7 @@ export async function POST(request) {
 
             await newTherapist.save();
             mongoose.disconnect();
-            return NextResponse.redirect("http://localhost:3000/login")
-            //return NextResponse.json({ msg: 'Account Created'}, {status: 200})
+            return NextResponse.json({ msg: 'Account Created'} , {status: 200});
         } else if(x.role === "Client") {
 
             let newClient = new clients({
@@ -40,9 +39,9 @@ export async function POST(request) {
                 DatesReserved: [],
                 Therapists: [],
                 Info: {
-                    Name: "",
-                    Age: "",
-                    Bio: ""
+                    Name: x.name,
+                    Age: x.age,
+                    Bio: x.bio
                 },
             })
 
@@ -50,11 +49,9 @@ export async function POST(request) {
             mongoose.disconnect();
             return NextResponse.json({ msg: 'Account Created'}, {status: 200})
         } else {
-
             mongoose.disconnect();
             return NextResponse.json({ msg: 'Role Not Chosen'}, {status: 404})
         }
-
     } catch (error) {
         console.log(error);
         return NextResponse.json({msg: 'Internal Server Error'}, {status: 500})
