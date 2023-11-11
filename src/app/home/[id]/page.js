@@ -7,15 +7,16 @@
 // import Box from '@mui/material/Box';
 import { React , useEffect, useState } from 'react';
 // import axios from 'axios';
-import Calender from '@/app/components/Calender/Calender';
-import Thomepage from '@/app/components/THomepage/Thomepage';
+//import Calender from '@/app/components/Calender/Calender';
+//import Thomepage from '@/app/components/THomepage/Thomepage';
 
 
 
 export default function Homepage({ params }){
     return (
         <>
-            <Thomepage id={params.id}/>
+            
+            <p>{params.id}</p>
         </>
     )
 }

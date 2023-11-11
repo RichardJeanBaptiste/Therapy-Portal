@@ -3,7 +3,7 @@
 import {React, useState, useEffect } from 'react';
 import { TextField, Typography, Box, Button, Divider, Modal, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio  } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation'
 import img1 from "../../public/a1.jpg";
 import img2 from "../../public/a2.jpg";
 import img3 from "../../public/a3.jpg";
@@ -68,10 +68,13 @@ export default function Home() {
 
   const theme = useTheme();
   const styles = useStyles(theme);
+  const router = useRouter();
 
   const [imgNum, SetImgNum] = useState(img1);
   const [open, setOpen] = useState(false);
   const [showFields, SetShowFields] = useState("none");
+
+  /****************************** Register States ****************************/
   const [regRole, SetRegRole] = useState(null);
   const [regUsername, SetRegUsername] = useState("");
   const [regPassword, SetRegPassword] = useState("");
@@ -85,6 +88,12 @@ export default function Home() {
 
 
 
+
+  /******************************* Login States ******************************/
+  const [loginUsername, SetLoginUsername] = useState("");
+  const [loginPassword, SetLoginPassword] = useState("");
+
+
   const handleOpen = () => {
     SetShowFields("none");
     setOpen(true);
@@ -96,7 +105,9 @@ export default function Home() {
     rand_img();
   },[]);
 
+  
 
+  /*********************************** Register *************************************************/
   const handleRegUsername = (e) => {
     SetRegUsername(e.target.value);
   }
@@ -195,7 +206,39 @@ export default function Home() {
       console.log(error);
       alert("Something Went Wrong");
     });
-}
+  }
+
+  /****************************************************** LOGIN ******************************************************/
+
+  const handleLoginUsername = (e) => {
+      SetLoginUsername(e.target.value);
+  }
+
+  const handleLoginPassword = (e) => {
+      SetLoginPassword(e.target.value);
+  }
+
+
+  const handleLogin = () => {
+
+    console.log(" login ");
+    axios.post('/api/login', {
+      username: loginUsername,
+      password: loginPassword
+    })
+    .then(function (response) {
+
+      if(response.status === 200){
+        console.log(response.data.msg);
+        router.push(`/home/${response.data.msg[1]}`);
+      } 
+    })
+    .catch(function (error) {
+      console.log(error);
+      alert("Something Went Wrong");
+    });
+
+  }
 
   const rand_img = () => {
     let randomInt = Math.floor(Math.random() * (8 - 1 + 1)) + 1;
@@ -292,12 +335,12 @@ export default function Home() {
 
               <FormControl>
 
-                <TextField id="username-field"  label="Username" variant="outlined"  sx={{ paddingBottom: '5%'}}/>
+                <TextField id="username-field"  label="Username" variant="outlined"  sx={{ paddingBottom: '5%'}} onChange={handleLoginUsername}/>
 
-                <TextField id="outlined-basic" label="Password" variant="outlined" type='password' sx={{ paddingBottom: '9%'}}/>
+                <TextField id="outlined-basic" label="Password" variant="outlined" type='password' sx={{ paddingBottom: '9%'}} onChange={handleLoginPassword}/>
 
                 <Box sx={{ paddingBottom: '4%'}}>
-                  <Button variant="contained" sx={{width:'100%', height: '3em'}}>Log In</Button>
+                  <Button variant="contained" sx={{width:'100%', height: '3em'}} onClick={handleLogin}>Log In</Button>
                 </Box>
                 
                 <Divider> <Typography variant='body1' component="p">Or</Typography></Divider>

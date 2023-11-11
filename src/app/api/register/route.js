@@ -10,8 +10,6 @@ export async function POST(request) {
         await mongoose.connect(process.env.MONGO_URI);
         let x = await request.json();
 
-
-
         if(x.role === "Therapist"){
 
             let query = therapists.where({ Username: x.username});

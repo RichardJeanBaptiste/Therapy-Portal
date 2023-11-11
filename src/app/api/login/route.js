@@ -36,24 +36,36 @@ export async function POST(request) {
 
         let queryUsername = data.username;
         let queryPassword = data.password;
-        let queryRole = data.role;
+        //let queryRole = data.role;
 
-        //return NextResponse.json({data}, {status: 200})
 
-        if(queryRole === "Therapist"){
+        let query = therapists.where({ Username: queryUsername});
+        let userQuery = await query.findOne();
 
-            let query = therapists.where({ Username: queryUsername});
-            let userQuery = await query.findOne();
+        if(userQuery === null){
 
-            return findUser(userQuery, queryUsername, queryPassword);
-        } else if(queryRole === "Client") {
-            let query = clients.where({ Username: queryUsername});
-            let userQuery = await query.findOne();
+            let newQuery = clients.where({ Username: queryUsername});
+            let clientQuery = await newQuery.findOne();
+            return findUser(clientQuery, queryUsername, queryPassword);
 
-            return findUser(userQuery, queryUsername, queryPassword);
         } else {
-            return NextResponse.json({ msg: 'Role not chosen'}, {status: 404})
+            return findUser(userQuery, queryUsername, queryPassword);
         }
+
+        // if(queryRole === "Therapist"){
+
+        //     let query = therapists.where({ Username: queryUsername});
+        //     let userQuery = await query.findOne();
+
+        //     return findUser(userQuery, queryUsername, queryPassword);
+        // } else if(queryRole === "Client") {
+        //     let query = clients.where({ Username: queryUsername});
+        //     let userQuery = await query.findOne();
+
+        //     return findUser(userQuery, queryUsername, queryPassword);
+        // } else {
+        //     return NextResponse.json({ msg: 'Role not chosen'}, {status: 404})
+        // }
                 
     } catch (error) {
         console.log(error);
