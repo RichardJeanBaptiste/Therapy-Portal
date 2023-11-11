@@ -75,6 +75,7 @@ export default function Home() {
   const [regRole, SetRegRole] = useState(null);
   const [regUsername, SetRegUsername] = useState("");
   const [regPassword, SetRegPassword] = useState("");
+  const [passMatch, SetPassMatch] = useState("primary");
   const [regName, SetRegName] = useState("");
   const [regAge, SetRegAge] = useState("");
   const [regBio, SetRegBio] = useState("");
@@ -105,7 +106,11 @@ export default function Home() {
   }
 
   const handlePasswordCheck = (e) => {
-
+    if(e.target.value === regPassword){
+      SetPassMatch("success");
+    } else {
+      SetPassMatch("error");
+    }
   }
 
   const handleRegRole = (e) => {
@@ -176,15 +181,19 @@ export default function Home() {
     axios.post('/api/register', data)
     .then(function (response) {
 
-      if(response.status === 200){
+      console.log(response.data.msg);
+
+      if(response.data.msg === "Account Created"){
         alert("Account Created");
         handleClose();
-      } else {
-        alert("Something Went Wrong");
+      } else if(response.data.msg === "Account Already Exists"){
+        alert("Username exists");
+        handleClose();
       }
     })
     .catch(function (error) {
       console.log(error);
+      alert("Something Went Wrong");
     });
 }
 
@@ -249,10 +258,10 @@ export default function Home() {
                   </FormControl>
                   <TextField id="reg_username"  label="Username" variant="outlined"  fullWidth required sx={{ paddingBottom: '2.5%'}} onChange={handleRegUsername}/>
                   <TextField id="reg_password"  type="password" label="Password" variant="outlined"  fullWidth required sx={{ paddingBottom: '2.5%'}} onChange={handleRegPassword}/>
-                  <TextField id="reg_password2" type="password" label="Re-enter" variant="outlined" fullWidth required sx={{ paddingBottom: '2.5%'}} onChange={handlePasswordCheck}/>
+                  <TextField id="reg_password2" type="password" label="Re-enter" variant="outlined" fullWidth color={passMatch} required sx={{ paddingBottom: '2.5%'}} onChange={handlePasswordCheck}/>
                   <TextField id="name"  label="Name" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegName}/>
-                  <TextField id="age"  label="Age" variant="outlined"  type="number" sx={{ paddingBottom: '2.5%'}} onChange={handleRegAge}/>
-                  <TextField id="bio"  label="Bio" variant="outlined"  fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegBio}/>
+                  <TextField id="age" label="Age" variant="outlined" fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegAge}/>
+                  <TextField id="bio"  label="Bio" variant="outlined"  multiline maxRows={4} fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegBio}/>
                   <Box sx={{ display: showFields}}>
                       <TextField id="specialty"  label="Specialty" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleSpecialty}/>
                       <TextField id="education"  label="Education" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegEducation}/>
@@ -307,34 +316,3 @@ export default function Home() {
   )
   
 }
-
-/**
- * <Box style={styles.navicon}>
-        <IconButton aria-label="menu" onClick={handleClick} sx={{ "color": "black"}}>
-          <MenuIcon/>
-        </IconButton>
-
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <MenuItem onClick={handleClose}>
-            <Link href="/registration">Register</Link>
-          </MenuItem>
-          
-          <MenuItem onClick={handleClose}>
-            <Link href="/login">Login</Link>
-          </MenuItem>
-          <MenuItem onClick={handleClose}>Logout</MenuItem>
-        </Menu>
-
-      </Box>
-        <Typography variant="h1" component="h1" style={styles.title1}>Therapy Portal</Typography>
- * 
- * 
- */
