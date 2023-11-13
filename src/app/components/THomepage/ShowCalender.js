@@ -1,49 +1,54 @@
-import React, { useState } from 'react';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import React, { useState, useEffect, useContext } from 'react';
 import { Typography, Box, Button, IconButton, Tooltip, Modal, TextField } from '@mui/material';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useTheme }  from '@mui/material/styles';
-import Calendar from 'react-calendar';
 import axios from 'axios';
 import './Calendar.css';
-//import 'react-calendar/dist/Calendar.css';
+import { getMonth } from '../util';
+import CalenderHeader from '../Calender/CalenderHeader';
+import Month from '../Calender/Month';
+import Sidebar from '../Calender/Sidebar';
+import GlobalContext from '../Calender/GlobalContext';
 
 const useStyles= (theme) => ({
-    calenderMenu: {
-      display: 'flex',
-      flexDirection: 'row'
-    },
-    calenderButtons: {
+    calenderRoot: {
+      height: '100%',
       display: 'flex',
       flexDirection: 'column'
-    },
-    availableButton: {
-      fontSize: '3em',
-      '&:hover': {
-        color: 'green'
-      },
-    },
-    modelStyle: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 400,
-      bgcolor: 'background.paper',
-      border: '2px solid #000',
-      boxShadow: 24,
-      p: 4,
-      height: '40em',
     }
 })
 
 
 export default function ShowCalender(props) {
-
   const theme = useTheme();
+  const styles = useStyles(theme);
+
+  const [currentMonth, setCurrentMonth] = useState(getMonth())
+
+  const {monthIndex} = useContext(GlobalContext)
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex));
+  },[monthIndex])
+
+  return (
+    <>
+        <Box sx={styles.calenderRoot}>
+            <CalenderHeader/>
+            <Box sx={{ display:'flex', flex: 1}}>
+              <Sidebar/>
+              <Month month={currentMonth}/>
+            </Box>
+        </Box>
+    </>
+  )
+}
+
+/**
+ * <Calendar onChange={onChange} value={value} />
+ * 
+ * 
+ *   const theme = useTheme();
   const styles = useStyles(theme);
   const [value, onChange] = useState(new Date());
   const [ open, setOpen ] = useState(false);
@@ -143,7 +148,7 @@ export default function ShowCalender(props) {
       </Modal>
 
       <Box sx={styles.calenderMenu}>
-        <Calendar onChange={onChange} value={value} />
+        
         <Box sx={styles.calenderButtons}>
         <Tooltip title="Make Available">
             <IconButton sx={styles.availableButton} onClick={makeAvailable}>
@@ -161,7 +166,10 @@ export default function ShowCalender(props) {
 
         </Box>
       </Box>
-    </>
-  )
-}
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 

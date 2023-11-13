@@ -1,18 +1,37 @@
-import {React, useContext} from 'react'
-import { useStateValue } from './DateProvider';
+import React, {useContext} from 'react';
 
-export default function Month() {
+import { Box } from '@mui/material';
+import Day from './Day';
+import { useTheme }  from '@mui/material/styles';
 
-    const { state, setState, currentDate } = useStateValue();
-
-    const handleClick = () => {
-        setState("check child click")
+const useStyles= (theme) => ({
+    monthRoot: {
+        display: 'flex',
+        flex: 1,
+        display: 'grid',
+        gridTemplateColumns: 'repeat(7, 1fr)',
+        gridTemplateRows: 'repeat(5, 1fr)',
     }
+})
 
+
+export default function Month({month}) {
+
+    const theme = useTheme();
+    const styles = useStyles(theme);
+    
     return (
         <>
-            <div>{currentDate}</div>
-            <div onClick={handleClick}>{state}</div>
+            <Box sx={styles.monthRoot}>
+                {month.map((row, i) => (
+                        <React.Fragment key={i}>
+                            {row.map((day, idx) => (
+                                <Day day={day} key={idx} rowIdx={i}/>
+                            ))}
+                        </React.Fragment>
+                    )
+                )}
+            </Box>
         </>
         
     )

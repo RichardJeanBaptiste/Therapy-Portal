@@ -12,6 +12,8 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ShowProfile from './ShowProfile';
 import ShowCalender from './ShowCalender';
 import ShowClients from './ShowClients';
+import { PanoramaSharp } from '@mui/icons-material';
+import ContextWrapper from '../Calender/ContextWrapper';
 
 const useStyles= (theme) => ({
   root: {
@@ -26,7 +28,7 @@ const useStyles= (theme) => ({
     left: '17px',
     display: 'flex',
     flexDirection: 'column',
-    width: '4rem',
+    width: '2rem',
     height: '99%',
     borderRightStyle: 'solid',
     borderWidth: '1px',
@@ -35,10 +37,10 @@ const useStyles= (theme) => ({
   },
   display_root: {
     position: 'absolute',
-    left: '6.5%',
+    left: '6%',
     top: '9%',
-    width: '111.8em',
-    height: '50em',
+    width: '101em',
+    height: '45em',
   }
 })
 
@@ -56,7 +58,7 @@ export default function Thomepage(props) {
     
     if(displayName === "Profile"){
       return (
-        <ShowProfile username={props.id}/>
+        <ShowProfile info={props.info}/>
       )
     } else if(displayName === "Calender") {
       return (
@@ -70,44 +72,45 @@ export default function Thomepage(props) {
   }
 
   return (
-    <Box sx={styles.root}>
-      {/** Navigation */}
-      <Box sx={styles.nav}>
-        <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
-          <Tooltip title="Profile">
-            <IconButton sx={{ fontSize: '3rem'}} onClick={() => SetDisplayName("Profile")}>
-                <AccountBoxIcon fontSize='inherit'/>
-            </IconButton>
-          </Tooltip>
-        </Box>
-          
-        <Box sx={{ paddingBottom: '5rem'}}>
-          <Tooltip title="Calender">
-            <IconButton sx={{fontSize: '3rem'}} onClick={() => SetDisplayName("Calender")}>
-                <CalendarMonthIcon fontSize='inherit'/>
-            </IconButton>
-          </Tooltip>
-          
-        </Box>
-          
+    <ContextWrapper>
 
-        <Box sx={{ paddingBottom: '5rem'}}>
-          <Tooltip title="Clients">
-            <IconButton sx={{fontSize: '3rem'}} onClick={() => SetDisplayName("Clients")}>
-                <PeopleAltIcon fontSize='inherit'/>
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </Box>
-
-      {/** Title */}
-      <Typography variant="h3" component="h3" align='center' sx={styles.title}>Welcome, {props.id}</Typography>
-
-      <Box sx={styles.display_root}>
-        <Display/>
-      </Box>
       
-    </Box>
+      <Box sx={styles.root}>
+        {/** Navigation */}
+        <Box sx={styles.nav}>
+          <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
+            <Tooltip title="Profile">
+              <IconButton sx={{ fontSize: '3rem'}} onClick={() => SetDisplayName("Profile")}>
+                  <AccountBoxIcon fontSize='inherit'/>
+              </IconButton>
+            </Tooltip>
+          </Box>
+            
+          <Box sx={{ paddingBottom: '5rem'}}>
+            <Tooltip title="Calender">
+              <IconButton sx={{fontSize: '3rem'}} onClick={() => SetDisplayName("Calender")}>
+                  <CalendarMonthIcon fontSize='inherit'/>
+              </IconButton>
+            </Tooltip>
+            
+          </Box>
+            
+
+          <Box sx={{ paddingBottom: '5rem'}}>
+            <Tooltip title="Clients">
+              <IconButton sx={{fontSize: '3rem'}} onClick={() => SetDisplayName("Clients")}>
+                  <PeopleAltIcon fontSize='inherit'/>
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Box>
+
+        <Box sx={styles.display_root}>
+          <Display/>
+        </Box>
+        
+      </Box>
+    </ContextWrapper>
   )
 }
 

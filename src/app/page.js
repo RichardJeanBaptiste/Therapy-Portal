@@ -221,7 +221,6 @@ export default function Home() {
 
   const handleLogin = () => {
 
-    console.log(" login ");
     axios.post('/api/login', {
       username: loginUsername,
       password: loginPassword
@@ -229,8 +228,14 @@ export default function Home() {
     .then(function (response) {
 
       if(response.status === 200){
-        console.log(response.data.msg);
-        router.push(`/home/${response.data.msg[1]}`);
+        
+        let id = response.data.msg[0];
+        let user = response.data.msg[1];
+        let name = response.data.msg[2];
+
+        let route = `${id}-${user}-${name}`;
+        
+        router.push(`/home/${route}`, { scroll: false })
       } 
     })
     .catch(function (error) {

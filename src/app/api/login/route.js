@@ -19,7 +19,7 @@ async function findUser(userQuery, queryUsername, queryPassword){
             
         } else {
 
-            let res = [ userQuery._id, userQuery.Username];
+            let res = [ userQuery._id, userQuery.Username, userQuery.Info[0].Name];
             mongoose.disconnect();
             return NextResponse.json({ msg: res}, {status: 200})
         }   

@@ -75,7 +75,11 @@ export default function Login() {
             if (response.status === 200){
                 let id = response.data.msg[0];
                 let user = response.data.msg[1];
-                router.push(`/home/${user}`, { scroll: false })
+                let name = response.data.msg[2];
+
+                let route = `${id}-${user}-${name}`;
+                let test = "ASD"
+                router.push(`/home/${route}`, { scroll: false })
             } else {
                 alert("Something went wrong");
             }
@@ -84,6 +88,10 @@ export default function Login() {
             console.log(error);
         });
       
+    }
+
+    const testPush = () => {
+      //router.push('/ABCDEFG');
     }
 
 
