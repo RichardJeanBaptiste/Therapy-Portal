@@ -15,7 +15,8 @@ const useStyles= (theme) => ({
     calenderRoot: {
       height: '100%',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      marginLeft: '2%',
     }
 })
 

@@ -17,6 +17,8 @@ export async function POST(request) {
         let query = therapists.where({ Username: queryTherapist});
         let userQuery = await query.findOne();
 
+        
+
         if(userQuery === null){
             mongoose.disconnect();
             return NextResponse.json({ "msg": "Therapist not found"});

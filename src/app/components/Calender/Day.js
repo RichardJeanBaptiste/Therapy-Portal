@@ -23,7 +23,8 @@ export default function Day({day, rowIdx}) {
             border: '1px solid #e2e8f0',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center'
+            alignItems: 'center',
+            height: '100%'
         }}>
             <header sx={{ display:'flex', flexDirection: 'column', alignItems: 'center'}}>
                 {rowIdx === 0 && (

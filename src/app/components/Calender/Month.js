@@ -1,7 +1,8 @@
 import React, {useContext} from 'react';
 
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import Day from './Day';
+import dayjs from 'dayjs';
 import { useTheme }  from '@mui/material/styles';
 
 const useStyles= (theme) => ({
@@ -19,6 +20,19 @@ export default function Month({month}) {
 
     const theme = useTheme();
     const styles = useStyles(theme);
+
+    const handlePastDates = (thisDay) => {
+        let currentDate = dayjs().subtract(1, 'day');
+
+        if(thisDay < currentDate){
+            return {
+                opacity: '0.5',
+                pointerEvents: 'none',
+            }
+        } else {
+            return {}
+        }
+    }
     
     return (
         <>
@@ -26,7 +40,9 @@ export default function Month({month}) {
                 {month.map((row, i) => (
                         <React.Fragment key={i}>
                             {row.map((day, idx) => (
-                                <Day day={day} key={idx} rowIdx={i}/>
+                                <Box key={idx} sx={handlePastDates(day)}>
+                                    <Day day={day} key={idx} rowIdx={i}/>
+                                </Box>
                             ))}
                         </React.Fragment>
                     )

@@ -48,7 +48,7 @@ export default function Thomepage(props) {
 
   const theme = useTheme();
   const styles = useStyles(theme);
-  const [ displayName, SetDisplayName ] = useState("Profile");
+  const [ displayName, SetDisplayName ] = useState("Calender");
 
   const Display = () => {
 
@@ -80,7 +80,7 @@ export default function Thomepage(props) {
         <Box sx={styles.nav}>
           <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
             <Tooltip title="Profile">
-              <IconButton sx={{ fontSize: '3rem'}} onClick={() => SetDisplayName("Profile")}>
+              <IconButton sx={{ fontSize: '3rem'}}>
                   <AccountBoxIcon fontSize='inherit'/>
               </IconButton>
             </Tooltip>
@@ -98,7 +98,7 @@ export default function Thomepage(props) {
 
           <Box sx={{ paddingBottom: '5rem'}}>
             <Tooltip title="Clients">
-              <IconButton sx={{fontSize: '3rem'}} onClick={() => SetDisplayName("Clients")}>
+              <IconButton sx={{fontSize: '3rem'}}>
                   <PeopleAltIcon fontSize='inherit'/>
               </IconButton>
             </Tooltip>

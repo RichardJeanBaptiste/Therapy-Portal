@@ -239,8 +239,14 @@ export default function Home() {
       } 
     })
     .catch(function (error) {
-      console.log(error);
-      alert("Something Went Wrong");
+
+      if(error.response.status === 404){
+        alert("Username or Password not found");
+      } else {
+        console.log(error);
+        alert("Something Went Wrong");
+      }
+      
     });
 
   }
@@ -329,6 +335,7 @@ export default function Home() {
             width={850}
             height={870}
             alt="Stock Therapy Photo"
+            priority={true}
           />
 
 
