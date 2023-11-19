@@ -99,6 +99,7 @@ export default function Month({month,username}) {
         })
         .then(function (response) {
             alert(response.data.msg);
+            console.log(response);
             SetShowClient("none");
             SetClient("");
         })

@@ -69,26 +69,3 @@ export async function POST(request) {
         
     }
 }
-
-/**
- * newCal.dates.map((x) => {
-                if(Object.keys(x)[0] === date){
-                    //console.log(Object.keys(x)[0])
-                    // let temp3 = x[date];
-                    // temp3.push(user);
-                    console.log(x[date]);
-                    x[date].push(user);
-
-                    newCal.save();
-                }
-            })
-
-
-            const filter = { name: "demo" };
-
-        const update = {
-            $push: {
-              "dates.0.Thu Oct 05 2023 00:00:00 GMT-0400 (Eastern Daylight Time)": "newElement"
-            }
-        };
- */
