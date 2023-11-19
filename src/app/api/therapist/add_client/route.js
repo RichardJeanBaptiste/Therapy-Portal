@@ -17,6 +17,7 @@ export async function POST(request) {
         let query = therapists.where({ Username: queryTherapist});
         let userQuery = await query.findOne();
 
+       
         
 
         if(userQuery === null){
@@ -30,6 +31,7 @@ export async function POST(request) {
             } 
 
             // add to scheduled dates
+            // Check If Date Already Scheduled
             userQuery.DatesScheduled.push(queryDate);
             await userQuery.save();
 
