@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { Box, Button, Modal, Typography, TextField, Divider, List, ListItem} from '@mui/material';
 import Day from './Day';
 import dayjs from 'dayjs';
@@ -47,11 +47,29 @@ export default function Month({month,username}) {
     const [ activeDate, SetActiveDate ] = useState("");
     const [ showClientField, SetShowClient] = useState("none");
     const [ currentClient, SetClient ] = useState("");
+    const [currentClients, SetCurrentClients] = useState([""]);
     const [open, setOpen] = useState(false);
 
     const handleOpen = (day) => {
+        
         SetActiveDate(day.format('ddd, DD MMM YYYY'))
+        
         setOpen(true);
+
+        SetCurrentClients([]);
+        
+        axios.post('/api/therapist/get_scheduled',{
+            username: username,
+            date: day
+        })
+        .then(function (response){
+            SetCurrentClients(response.data.msg);
+        })
+        .catch(function (error) {
+            console.log(error);
+            alert("Something Went Wrong");
+        });
+
     };
 
     const handleClose = () => setOpen(false);
@@ -99,7 +117,6 @@ export default function Month({month,username}) {
         })
         .then(function (response) {
             alert(response.data.msg);
-            console.log(response);
             SetShowClient("none");
             SetClient("");
         })
@@ -107,6 +124,22 @@ export default function Month({month,username}) {
             console.log(error);
             alert("Something Went Wrong");
         });
+    }
+
+    const ShowScheduledClients = () => {
+    
+        return (
+            <ul>
+                {Array.isArray(currentClients) ? (
+                    currentClients.map((x, i) => (
+                    <li key={i}>{x}</li>
+                    ))
+                ) : (
+                    <></>
+                )}
+            </ul>
+        )
+        
     }
 
     
@@ -135,11 +168,7 @@ export default function Month({month,username}) {
 
                             <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '9%'}}>
                                 <Typography>Scheduled</Typography>
-                                <ul>
-                                    <li>Coffee</li>
-                                    <li>Tea</li>
-                                    <li>Milk</li>
-                                </ul>
+                                <ShowScheduledClients/>
                             </Box>
                     </Box>
                       
