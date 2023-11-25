@@ -70,7 +70,7 @@ export default function Home() {
   const styles = useStyles(theme);
   const router = useRouter();
 
-  const [imgNum, SetImgNum] = useState(img1);
+  const [imgNum, SetImgNum] = useState("");
   const [open, setOpen] = useState(false);
   const [showFields, SetShowFields] = useState("none");
 

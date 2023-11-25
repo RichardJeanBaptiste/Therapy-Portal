@@ -35,7 +35,7 @@ export default function ShowCalender(props) {
   return (
     <>
         <Box sx={styles.calenderRoot}>
-            <CalenderHeader/>
+            <CalenderHeader username={props.username}/>
             <Box sx={{ display:'flex', flex: 1}}>
               <Sidebar/>
               <Month month={currentMonth} username={props.username}/>

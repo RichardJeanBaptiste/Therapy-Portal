@@ -8,7 +8,7 @@ export async function POST(request){
         await mongoose.connect(process.env.MONGO_URI);
         let data = await request.json();
 
-        let queryUsername = data.username;
+        let queryUsername = data.Username;
         let queryDate = data.newDate;
 
         let query = therapists.where({ Username: queryUsername});

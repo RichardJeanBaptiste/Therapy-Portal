@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Box, Button, Modal, Typography, TextField, Divider, List, ListItem} from '@mui/material';
 import Day from './Day';
 import dayjs from 'dayjs';
@@ -109,6 +109,11 @@ export default function Month({month,username}) {
         SetClient(e.target.value);
     }
 
+    const cancelClientField = () => {
+        SetShowClient("none");
+        SetClient("");
+    }
+
     const AddClient = () => {
         axios.post('/api/therapist/add_client', {
             therapist: username,
@@ -117,6 +122,7 @@ export default function Month({month,username}) {
         })
         .then(function (response) {
             alert(response.data.msg);
+            //SetCurrentClients(response.data.msg);
             SetShowClient("none");
             SetClient("");
         })
@@ -160,7 +166,10 @@ export default function Month({month,username}) {
                                 <Button onClick={makeDateAvailable}>Add Availability</Button>
                                 <Button onClick={showClient}>Add Client</Button>
                                 <TextField id="outlined-basic" label="client name" variant="outlined" sx={{display: showClientField}} onChange={handleClientField}/>
-                                <Button onClick={AddClient} sx={{ display: showClientField}}>Confirm</Button>
+                                <Box sx={{ display: 'flex', flexDirection: 'row'}}>
+                                    <Button onClick={cancelClientField} sx={{ display: showClientField}}>Cancel</Button>
+                                    <Button onClick={AddClient} sx={{ display: showClientField}}>Confirm</Button>
+                                </Box>
                                 <Button onClick={handleClose}>Cancel</Button>
                             </Box>
 
