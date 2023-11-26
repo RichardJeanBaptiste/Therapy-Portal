@@ -17,10 +17,10 @@ export async function POST(request){
         let userQuery = await query.findOne();
 
         if(userQuery === null){
-            mongoose.disconnect();
+            
             return NextResponse.json({ "msg": "Therapist not found"})
         } else {
-            mongoose.disconnect();
+            
             let res = { "username" : userQuery.Username, "clients" : userQuery.Clients, "scheduled" : userQuery.DatesScheduled, "available": userQuery.DatesAvailable};
             return NextResponse.json(res);
         }

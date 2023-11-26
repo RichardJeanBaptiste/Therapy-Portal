@@ -16,15 +16,24 @@ export async function POST(request){
         let query = therapists.where({ Username: queryUsername});
         let userQuery = await query.findOne();
 
-        if(userQuery === null){
-            mongoose.disconnect();
-            return NextResponse.json({ "msg": "Therapist not found"})
-        } else {
-            mongoose.disconnect();
-            return NextResponse.json(userQuery.Clients);
-        }
+        //console.log(query);
+
+        return NextResponse.json({ "msg": "test"});
+
+        
+
+        
+
+        // if(userQuery === null){
+        //     mongoose.disconnect();
+        //     return NextResponse.json({ "msg": "Therapist not found"})
+        // } else {
+        //     mongoose.disconnect();
+        //     return NextResponse.json(userQuery.Clients);
+        // }
 
     } catch(error) {
+        console.log(error);
         return NextResponse.json({"msg": "Server Error"}, {status: 500});
     }
 }
