@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import QueueIcon from '@mui/icons-material/Queue';
-import { Typography, Button, Modal, Box, Divider } from '@mui/material';
+import { Typography, Button, Modal, Box, Divider, Tooltip, IconButton } from '@mui/material';
 import GlobalContext from './GlobalContext';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -123,33 +123,37 @@ export default function CalenderHeader(props) {
             </Modal>
 
 
-            <Typography component='h2' sx={{ marginLeft: '1rem', fontSize:'1.25rem', color: '#718096', fontWeight: 'bold'}}>
+            <Typography component='h2' sx={{ fontSize:'1.25rem', color: '#718096', fontWeight: 'bold'}}>
                 {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
             </Typography>
             <Button sx={{ color: '#4a5568'}} onClick={handleReset}>Today</Button>
             <Button onClick={handlePrevMonth}>
-                <span 
+                <IconButton 
                     sx={{cursor: 'pointer', marginLeft: '0.5rem', marginRight: '0.5rem'}} 
                     onMouseEnter={() => SetChevLeftColor(true)}
                     onMouseLeave={() => SetChevLeftColor(false)} 
                 >
                     <ChevronLeftIcon sx={iconLeftStyles}/>
-                </span>
+                </IconButton>
             </Button>
             <Button onClick={handleNextMonth}>
-                <span 
+                <IconButton 
                     sx={{cursor: 'pointer', marginLeft: '0.5rem', marginRight: '0.5rem'}}
                     onMouseEnter={() => SetChevRightColor(true)}
                     onMouseLeave={() => SetChevRightColor(false)} 
                 >
                     <ChevronRightIcon sx={iconRightStyles}/>
-                </span>
+                </IconButton>
             </Button>
-            <Button onClick={handleOpen}>
-                <span>
-                    <QueueIcon sx={{ color: '#4a5568'}}/>
-                </span>
-            </Button>
+
+            <Tooltip title="Add Multiple Dates" arrow>
+                <Button onClick={handleOpen} sx={{ marginLeft: '2%'}}>
+                    <IconButton>
+                        <QueueIcon sx={{ color: '#4a5568'}}/>
+                    </IconButton>
+                </Button>
+            </Tooltip>
+            
            
         </header>
     )

@@ -21,7 +21,7 @@ export async function POST(request){
             return NextResponse.json({ "msg": "Therapist not found"})
         } else {
             mongoose.disconnect();
-            let res = { "username" : userQuery.Username, "clients" : userQuery.Clients, "scheduled" : userQuery.DatesScheduled};
+            let res = { "username" : userQuery.Username, "clients" : userQuery.Clients, "scheduled" : userQuery.DatesScheduled, "available": userQuery.DatesAvailable};
             return NextResponse.json(res);
         }
 

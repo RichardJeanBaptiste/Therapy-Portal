@@ -2,7 +2,6 @@
 
 import React, {useState} from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { useTheme }  from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -48,7 +47,7 @@ export default function Thomepage(props) {
 
   const theme = useTheme();
   const styles = useStyles(theme);
-  const [ displayName, SetDisplayName ] = useState("Calender");
+  const [ displayName, SetDisplayName ] = useState("Profile");
 
   const Display = () => {
 
@@ -58,7 +57,7 @@ export default function Thomepage(props) {
     
     if(displayName === "Profile"){
       return (
-        <ShowProfile info={props.info}/>
+        <ShowProfile info={props.info} username={props.info[1]}/>
       )
     } else if(displayName === "Calender") {
       return (
@@ -81,7 +80,7 @@ export default function Thomepage(props) {
           <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
             <Tooltip title="Profile">
               <IconButton sx={{ fontSize: '3rem'}}>
-                  <AccountBoxIcon fontSize='inherit'/>
+                  <AccountBoxIcon fontSize='inherit' onClick={() => SetDisplayName("Profile")}/>
               </IconButton>
             </Tooltip>
           </Box>
