@@ -14,6 +14,8 @@ export async function POST(request){
         let queryUsername = data.username;
         let queryClient = data.clientname;
 
+        console.log(queryClient);
+
         let query = therapists.where({ Username: queryUsername});
         let userQuery = await query.findOne();
         let dates = userQuery.DatesScheduled;

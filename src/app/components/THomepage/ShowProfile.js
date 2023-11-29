@@ -2,6 +2,8 @@
 import React, {useState, useEffect} from 'react';
 import { Box, Typography, IconButton, Modal, Button, Tooltip } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
+import ShowClientDates from '../Profile/ShowClientDates';
+import ShowDeleteClient from '../Profile/ShowDeleteClient';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
@@ -42,46 +44,6 @@ const useStyles= (theme) => ({
     borderColor: 'lightgrey',
     borderWidth: '2px',
     borderRadius: '2%',
-  },
-  modalStyle: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 450,
-    height: '27em',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  },
-  list: {
-    height: '17em',
-    width: '13em',
-    overflowY: 'scroll',
-    marginLeft: '7%'
-  },
-  list2: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '15em',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  listitem: {
-    fontSize: '1rem',
-    paddingBottom: '5%',
-  },
-  modalStyle2: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 450,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
   },
 })
 
@@ -161,12 +123,14 @@ export default function ShowProfile(props) {
     };
 
     const handleOpen2 = (name) => {
+      SetClientName(name);
       setOpen2(true);
 
     }
 
     const handleClose = () => setOpen(false);
     const handleClose2 = () => setOpen2(false);
+
 
     useEffect(() => {
 
@@ -187,51 +151,27 @@ export default function ShowProfile(props) {
       SetDates(temp);
     },[clientName]);
 
+    const removeClient = () => {
+      axios.post('/api/therapist/remove_client', {
+        username: props.username,
+        clientname: clientName,
+      })
+      .then(function (response) {
+  
+          console.log(response.data);
+          alert(`${clientName} deleted from client list`)
+          handleClose2();
+      })
+      .catch(function (error) {
+          console.log(error);
+      });
+    }
+
     return (
       <ul>
-        <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby={clientName}
-        aria-describedby={`Appointments Scheduled for ${clientName}`}
-        >
-          <Box sx={styles.modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
-              {`${clientName}'s Upcoming Appointments`}
-              <ul>
-                <Box sx={styles.list}>
-                  {Array.isArray(dates) ? (
-                    dates.map((x, i) => (
-                      <Box key={i} sx={styles.list2}>
-                        <li key={i}>
-                          <Typography variant="p" component="p" sx={styles.listitem}>{x}</Typography>
-                        </li>
-                      </Box>
-                    ))
-                  ) : (
-                      <></>
-                  )}
-                </Box>
-              </ul>
-            </Typography>
-            <Button variant='outlined' color='error' onClick={handleClose}>Close</Button>
-          </Box>
-        </Modal>
-        <Modal
-        open={open2}
-        onClose={handleClose2}
-        aria-labelledby={clientName}
-        aria-describedby={`Remove ${clientName} from client list`}
-        >
-          <Box sx={styles.modalStyle2}>
-            <Typography component='h3' variant='h3' align='center' sx={{ fontSize: '2rem'}}>{`Remove ${clientName} from client list?`}</Typography>
-            <Typography component='p' variant='p' align='center' sx={{ marginTop: '2%'}}>This will remove the client and all Scheduled Appointments</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', width: '95%', marginTop: '7%'}}>
-              <Button variant='outlined' color='info' onClick={handleClose2}>Cancel</Button>
-              <Button variant='outlined' color='error' sx={{ position: 'absolute', right: '6%'}}>Remove</Button>
-            </Box>
-          </Box>
-        </Modal>
+        <ShowClientDates open={open} clientName={clientName} dates={dates} handleClose={handleClose}/>
+        <ShowDeleteClient open2={open2} clientName={clientName} handleClose2={handleClose2} removeClient={removeClient}/>
+        
           {Array.isArray(allClients) ? (
               allClients.map((x, i) => (
 
@@ -240,15 +180,15 @@ export default function ShowProfile(props) {
                       <li key={i}>{x}</li>
 
                       <Tooltip title="Show Appointments" arrow>
-                          <IconButton>
-                              <VisibilityIcon onClick={() => handleOpen(x)}/>  
+                          <IconButton onClick={() => handleOpen(x)}>
+                              <VisibilityIcon/>  
                           </IconButton>
                       </Tooltip>
                       
 
                       <Tooltip title="Remove Client" arrow>
-                          <IconButton>
-                            <CloseIcon onClick={() => handleOpen2(x)}/>
+                          <IconButton onClick={() => handleOpen2(x)}>
+                            <CloseIcon />
                           </IconButton>
                       </Tooltip>
                   </Box>
