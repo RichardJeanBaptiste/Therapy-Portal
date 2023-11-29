@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, {useState, useEffect} from 'react';
-import { Box, Typography, IconButton, Modal, Button } from '@mui/material';
+import { Box, Typography, IconButton, Modal, Button, Tooltip } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
@@ -26,23 +26,63 @@ const useStyles= (theme) => ({
     height: '16em',
 
   },
-
   oBoxTitle: {
     whiteSpace: 'pre-wrap',
     marginTop: '5%',
     marginLeft: '8%'
+  },
+  clientItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: '40px',
+    width: '15em',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderStyle: 'solid',
+    borderColor: 'lightgrey',
+    borderWidth: '2px',
+    borderRadius: '2%',
   },
   modalStyle: {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 450,
+    height: '27em',
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-  }
+  },
+  list: {
+    height: '17em',
+    width: '13em',
+    overflowY: 'scroll',
+    marginLeft: '7%'
+  },
+  list2: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '15em',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  listitem: {
+    fontSize: '1rem',
+    paddingBottom: '5%',
+  },
+  modalStyle2: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 450,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  },
 })
 
 export default function ShowProfile(props) {
@@ -57,6 +97,19 @@ export default function ShowProfile(props) {
 
   const name = props.info[2].replace(new RegExp("%20", 'g'), " ");
   const date = new Date().toDateString();
+
+  const compareDates = (date1, date2) => {
+    const parsedDate1 = dayjs(date1);
+    const parsedDate2 = dayjs(date2);
+  
+    if (parsedDate1.isBefore(parsedDate2)) {
+      return -1;
+    } else if (parsedDate1.isAfter(parsedDate2)) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
 
   useEffect(() => {
     axios.post('/api/therapist/dashboard', {
@@ -81,19 +134,6 @@ export default function ShowProfile(props) {
         return dayjsDate1.diff(dayjsDate2);
       })
 
-      const compareDates = (date1, date2) => {
-        const parsedDate1 = dayjs(date1);
-        const parsedDate2 = dayjs(date2);
-      
-        if (parsedDate1.isBefore(parsedDate2)) {
-          return -1;
-        } else if (parsedDate1.isAfter(parsedDate2)) {
-          return 1;
-        } else {
-          return 0;
-        }
-      };
-
 
       let sortedDates = response.data["available"].sort(compareDates);
 
@@ -112,13 +152,21 @@ export default function ShowProfile(props) {
 
     const [clientName, SetClientName] = useState("");
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
     const [ dates, SetDates] = useState([]);
+
     const handleOpen = (name) => {
       SetClientName(name);
       setOpen(true);
     };
-    const handleClose = () => setOpen(false);
 
+    const handleOpen2 = (name) => {
+      setOpen2(true);
+
+    }
+
+    const handleClose = () => setOpen(false);
+    const handleClose2 = () => setOpen2(false);
 
     useEffect(() => {
 
@@ -128,12 +176,14 @@ export default function ShowProfile(props) {
         for (const key in entry){
           entry[key].forEach((item) => {
             if(item[0] === clientName){
-              temp.push(key.toString())
+              //temp.push(key.toString())
+              temp.push(dayjs(key).format('ddd, DD MMM YYYY'))
             }
           })
         }
       })
 
+      temp = temp.sort(compareDates);
       SetDates(temp);
     },[clientName]);
 
@@ -146,39 +196,64 @@ export default function ShowProfile(props) {
         aria-describedby={`Appointments Scheduled for ${clientName}`}
         >
           <Box sx={styles.modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              {clientName}
+            <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
+              {`${clientName}'s Upcoming Appointments`}
               <ul>
-
-              {Array.isArray(dates) ? (
-                dates.map((x, i) => (
-                  <Box key={i} sx={{ display: 'flex', flexDirection: 'row', height: '40px', width: '100px', justifyContent: 'center', alignItems: 'center'}}>
-                    <li key={i}>
-                      <Typography variant="p" component="p" sx={{ fontSize: '1rem' }}>{x}</Typography>
-                    </li>
-                  </Box>
-                ))
-              ) : (
-                  <></>
-              )}
-                
+                <Box sx={styles.list}>
+                  {Array.isArray(dates) ? (
+                    dates.map((x, i) => (
+                      <Box key={i} sx={styles.list2}>
+                        <li key={i}>
+                          <Typography variant="p" component="p" sx={styles.listitem}>{x}</Typography>
+                        </li>
+                      </Box>
+                    ))
+                  ) : (
+                      <></>
+                  )}
+                </Box>
               </ul>
             </Typography>
+            <Button variant='outlined' color='error' onClick={handleClose}>Close</Button>
+          </Box>
+        </Modal>
+        <Modal
+        open={open2}
+        onClose={handleClose2}
+        aria-labelledby={clientName}
+        aria-describedby={`Remove ${clientName} from client list`}
+        >
+          <Box sx={styles.modalStyle2}>
+            <Typography component='h3' variant='h3' align='center' sx={{ fontSize: '2rem'}}>{`Remove ${clientName} from client list?`}</Typography>
+            <Typography component='p' variant='p' align='center' sx={{ marginTop: '2%'}}>This will remove the client and all Scheduled Appointments</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', width: '95%', marginTop: '7%'}}>
+              <Button variant='outlined' color='info' onClick={handleClose2}>Cancel</Button>
+              <Button variant='outlined' color='error' sx={{ position: 'absolute', right: '6%'}}>Remove</Button>
+            </Box>
           </Box>
         </Modal>
           {Array.isArray(allClients) ? (
               allClients.map((x, i) => (
-                <Box key={i} sx={{ display: 'flex', flexDirection: 'row', height: '40px', width: '100px', justifyContent: 'center', alignItems: 'center'}}>
-                   <li key={i}>{x}</li>
-                   <IconButton>
-                      <VisibilityIcon onClick={() => handleOpen(x)}/>  
-                   </IconButton>
 
-                   <IconButton>
-                     <CloseIcon/>
-                   </IconButton>
+                <Box key={i} sx={{ paddingBottom: '3%'}}>
+                    <Box key={i} sx={styles.clientItem}>
+                      <li key={i}>{x}</li>
+
+                      <Tooltip title="Show Appointments" arrow>
+                          <IconButton>
+                              <VisibilityIcon onClick={() => handleOpen(x)}/>  
+                          </IconButton>
+                      </Tooltip>
+                      
+
+                      <Tooltip title="Remove Client" arrow>
+                          <IconButton>
+                            <CloseIcon onClick={() => handleOpen2(x)}/>
+                          </IconButton>
+                      </Tooltip>
+                  </Box>
                 </Box>
-             
+                
               ))
           ) : (
               <></>

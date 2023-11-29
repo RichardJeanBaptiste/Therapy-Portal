@@ -127,24 +127,28 @@ export default function CalenderHeader(props) {
                 {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
             </Typography>
             <Button sx={{ color: '#4a5568'}} onClick={handleReset}>Today</Button>
-            <Button onClick={handlePrevMonth}>
+           
+            <Tooltip title="Previous Month" arrow>
                 <IconButton 
                     sx={{cursor: 'pointer', marginLeft: '0.5rem', marginRight: '0.5rem'}} 
                     onMouseEnter={() => SetChevLeftColor(true)}
                     onMouseLeave={() => SetChevLeftColor(false)} 
+                    onClick={handlePrevMonth}
                 >
                     <ChevronLeftIcon sx={iconLeftStyles}/>
                 </IconButton>
-            </Button>
-            <Button onClick={handleNextMonth}>
+            </Tooltip>
+            
+            <Tooltip title="Next Month" arrow>
                 <IconButton 
                     sx={{cursor: 'pointer', marginLeft: '0.5rem', marginRight: '0.5rem'}}
                     onMouseEnter={() => SetChevRightColor(true)}
-                    onMouseLeave={() => SetChevRightColor(false)} 
+                    onMouseLeave={() => SetChevRightColor(false)}
+                    onClick={handleNextMonth}
                 >
                     <ChevronRightIcon sx={iconRightStyles}/>
                 </IconButton>
-            </Button>
+            </Tooltip>
 
             <Tooltip title="Add Multiple Dates" arrow>
                 <Button onClick={handleOpen} sx={{ marginLeft: '2%'}}>
