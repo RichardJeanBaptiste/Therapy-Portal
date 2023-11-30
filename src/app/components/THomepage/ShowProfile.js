@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import { Box, Typography, IconButton, Modal, Button, Tooltip } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
 import ShowClientDates from '../Profile/ShowClientDates';
+import ShowDates from '../Profile/ShowDates';
 import ShowDeleteClient from '../Profile/ShowDeleteClient';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
@@ -157,8 +158,6 @@ export default function ShowProfile(props) {
         clientname: clientName,
       })
       .then(function (response) {
-  
-          console.log(response.data);
           alert(`${clientName} deleted from client list`)
           handleClose2();
       })
@@ -202,20 +201,6 @@ export default function ShowProfile(props) {
     )
   }
 
-  const ShowDates = () => {
-
-    return (
-      <ul>
-          {Array.isArray(availableDates) ? (
-              availableDates.map((x, i) => (
-              <li key={i}>{x}</li>
-              ))
-          ) : (
-              <></>
-          )}
-      </ul>
-    )
-  }
 
 
   return (
@@ -240,7 +225,7 @@ export default function ShowProfile(props) {
           <Box sx={{ display: 'flex', flexDirection: 'row'}}>
             <ShowClients/>
             <Box sx={{ marginLeft: '5%'}}>
-              <ShowDates/>
+              <ShowDates availableDates={availableDates}/>
             </Box>
           </Box>
   
