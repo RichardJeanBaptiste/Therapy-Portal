@@ -36,10 +36,11 @@ const useStyles= (theme) => ({
   },
   display_root: {
     position: 'absolute',
-    left: '6%',
-    top: '9%',
-    width: '101em',
-    height: '45em',
+    left: '5%',
+    top: '0%',
+    width: '103.65em',
+    height: '100%',
+    backgroundColor: 'rgba(112, 101, 99, 0.1)',
   }
 })
 
@@ -71,9 +72,7 @@ export default function Thomepage(props) {
   }
 
   return (
-    <ContextWrapper>
-
-      
+    <ContextWrapper>      
       <Box sx={styles.root}>
         {/** Navigation */}
         <Box sx={styles.nav}>

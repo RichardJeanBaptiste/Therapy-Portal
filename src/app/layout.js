@@ -1,5 +1,5 @@
-import { Inter } from 'next/font/google'
-import { Roboto } from 'next/font/google'
+import { Inter, Roboto, Shadows_Into_Light, Outfit } from 'next/font/google';
+import Head from 'next/head';
  
 const roboto = Roboto({
   weight: '400',
@@ -7,6 +7,10 @@ const roboto = Roboto({
 })
 
 const inter = Inter({ subsets: ['latin'] })
+const outfit  = Outfit({ 
+  weight: '300',
+  subsets:['latin'], 
+})
 
 export const metadata = {
   title: 'Therapy Portal',
@@ -16,7 +20,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={outfit.className} style={{ backgroundColor: "#eaf7ff"}}>{children}</body>
     </html>
   )
 }

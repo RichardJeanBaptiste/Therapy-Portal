@@ -2,15 +2,13 @@
 import React, {useState, useEffect} from 'react';
 import { Box, Typography, IconButton, Modal, Button, Tooltip } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
-import ShowClientDates from '../Profile/ShowClientDates';
-import ShowDates from '../Profile/ShowDates';
-import ShowDeleteClient from '../Profile/ShowDeleteClient';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import catImg from  "../../../../public/p1.png";
+import ShowCurrentClients from '../Profile/ShowCurrentClients';
+import ShowUpcomingDates from '../Profile/ShowUpcomingDates';
+import { compareDates } from '../Commons';
 
 const useStyles= (theme) => ({
   root: {
@@ -27,7 +25,6 @@ const useStyles= (theme) => ({
     borderRadius: '2%',
     width: '49em',
     height: '16em',
-
   },
   oBoxTitle: {
     whiteSpace: 'pre-wrap',
@@ -46,6 +43,53 @@ const useStyles= (theme) => ({
     borderWidth: '2px',
     borderRadius: '2%',
   },
+
+  title: {
+    fontSize: '1.85em',
+    marginTop: '2%',
+    marginLeft: '2%'
+  },
+
+  intro: {
+    width: '85em',
+    height: '13em',
+    marginLeft: '4%',
+    backgroundColor: 'rgba(200, 213, 185, 0.5)',
+    borderRadius: '20px',
+  },
+  intro2: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingBottom: '5%'
+  },
+  introText: {
+    marginTop: '1%',
+    marginLeft: '2%',
+    fontSize: '1.35em'
+  },
+  dashboardItem1: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '3%'
+  },
+  showClientsContainer: {
+    width: '33em',
+    height: '27em',
+    backgroundColor: 'rgba(250, 243, 221, 1)',
+    borderRadius: '20px',
+    marginTop: '3%',
+    marginLeft: '10%'
+  },
+  showClientsContainer2: {
+    width: '33em',
+    height: '27em',
+    backgroundColor: 'rgba(250, 243, 221, 1)',
+    borderRadius: '20px',
+    marginLeft: '5%',
+    marginTop: '3%'
+  }
+
+
 })
 
 export default function ShowProfile(props) {
@@ -61,18 +105,6 @@ export default function ShowProfile(props) {
   const name = props.info[2].replace(new RegExp("%20", 'g'), " ");
   const date = new Date().toDateString();
 
-  const compareDates = (date1, date2) => {
-    const parsedDate1 = dayjs(date1);
-    const parsedDate2 = dayjs(date2);
-  
-    if (parsedDate1.isBefore(parsedDate2)) {
-      return -1;
-    } else if (parsedDate1.isAfter(parsedDate2)) {
-      return 1;
-    } else {
-      return 0;
-    }
-  };
 
   useEffect(() => {
     axios.post('/api/therapist/dashboard', {
@@ -100,113 +132,65 @@ export default function ShowProfile(props) {
 
       let sortedDates = response.data["available"].sort(compareDates);
 
+      //console.log(sortedKeys);
       SetUpcomingDate(sortedKeys[0]);
       SetAvailableDates(sortedDates);
       SetAllClients(response.data["clients"]);
       SetDatesScheduled(response.data["scheduled"]);
       SetProfileInfo(response.data);
+
     })
     .catch(function (error) {
         console.log(error);
     });
   },[props.username]);
 
-  const ShowClients = () => {
-
-    const [clientName, SetClientName] = useState("");
-    const [open, setOpen] = useState(false);
-    const [open2, setOpen2] = useState(false);
-    const [ dates, SetDates] = useState([]);
-
-    const handleOpen = (name) => {
-      SetClientName(name);
-      setOpen(true);
-    };
-
-    const handleOpen2 = (name) => {
-      SetClientName(name);
-      setOpen2(true);
-
-    }
-
-    const handleClose = () => setOpen(false);
-    const handleClose2 = () => setOpen2(false);
-
-
-    useEffect(() => {
-
-      let temp = [];
-
-      datesScheduled.forEach((entry) => {
-        for (const key in entry){
-          entry[key].forEach((item) => {
-            if(item[0] === clientName){
-              //temp.push(key.toString())
-              temp.push(dayjs(key).format('ddd, DD MMM YYYY'))
-            }
-          })
-        }
-      })
-
-      temp = temp.sort(compareDates);
-      SetDates(temp);
-    },[clientName]);
-
-    const removeClient = () => {
-      axios.post('/api/therapist/remove_client', {
-        username: props.username,
-        clientname: clientName,
-      })
-      .then(function (response) {
-          alert(`${clientName} deleted from client list`)
-          handleClose2();
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-    }
-
-    return (
-      <ul>
-        <ShowClientDates open={open} clientName={clientName} dates={dates} handleClose={handleClose}/>
-        <ShowDeleteClient open2={open2} clientName={clientName} handleClose2={handleClose2} removeClient={removeClient}/>
-        
-          {Array.isArray(allClients) ? (
-              allClients.map((x, i) => (
-
-                <Box key={i} sx={{ paddingBottom: '3%'}}>
-                    <Box key={i} sx={styles.clientItem}>
-                      <li key={i}>{x}</li>
-
-                      <Tooltip title="Show Appointments" arrow>
-                          <IconButton onClick={() => handleOpen(x)}>
-                              <VisibilityIcon/>  
-                          </IconButton>
-                      </Tooltip>
-                      
-
-                      <Tooltip title="Remove Client" arrow>
-                          <IconButton onClick={() => handleOpen2(x)}>
-                            <CloseIcon />
-                          </IconButton>
-                      </Tooltip>
-                  </Box>
-                </Box>
-                
-              ))
-          ) : (
-              <></>
-          )}
-      </ul>
-    )
-  }
-
-
 
   return (
     <>
-      <Box>
-          <Typography variant="h5" component="h5"sx={{ marginLeft: '3%'}}>Overview</Typography>
+      
+        <h3 style={styles.title}>Dashboard</h3>
+        <Box sx={styles.intro}>
+            <Box sx={styles.intro2}>
+                <Box sx={styles.introText}>
+                  <p>Welcome, <span style={{ fontWeight: 'bold'}}><u>{name}</u></span>
+                    <br/>
+                    Today's Date: <span><u>{date}</u></span>
+                    <br/>
+                    Upcoming Appointment: <span><u>{upcomingDate}</u></span> 
+                  </p>
+              </Box>
+
+              <Box>
+                {/************ Image  ***********/}
+              </Box>
+            </Box>
+
+            <Box sx={{ display: 'flex', flexDirection: 'row'}}>
+              <Box sx={styles.showClientsContainer}>
+                <ShowCurrentClients datesScheduled={datesScheduled} username={props.username} allClients={allClients} info={props.info}/>
+              </Box>
+
+              <Box sx={styles.showClientsContainer2}>
+                <ShowUpcomingDates upcomingDates={datesScheduled}/>
+              </Box>
+            </Box>
+            
+        </Box>
+      
+      
+    </>
+  )
+}
+
+/***
+ *  
+            <Box sx={styles.dashboardItem1}>
+                <ShowCurrentClients datesScheduled={datesScheduled} username={props.username} allClients={allClients} info={props.info}/>
+
+            </Box> 
+ * 
+ * <Typography variant="h5" component="h5"sx={{ marginLeft: '3%'}}>Overview</Typography>
 
           <Box sx={styles.oBox}>
               <Image
@@ -225,11 +209,11 @@ export default function ShowProfile(props) {
           <Box sx={{ display: 'flex', flexDirection: 'row'}}>
             <ShowClients/>
             <Box sx={{ marginLeft: '5%'}}>
-              <ShowDates availableDates={availableDates}/>
+              <ShowDatesAvailable availableDates={availableDates}/>
             </Box>
           </Box>
-  
-      </Box>
-    </>
-  )
-}
+  * 
+ * 
+ * 
+ * 
+ */

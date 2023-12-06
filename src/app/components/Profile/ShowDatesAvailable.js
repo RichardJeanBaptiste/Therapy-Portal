@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function ShowDates(props) {
+export default function ShowDatesAvailable(props) {
   return (
     <ul>
           {Array.isArray(props.availableDates) ? (

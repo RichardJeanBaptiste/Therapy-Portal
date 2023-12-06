@@ -73,7 +73,6 @@ export default function ShowClients(props) {
     return (
         <>
             <Box>
-
                 <Typography variant='body1' component="p">Clients</Typography>
                 <Box sx={styles.card_container}>
                     <Box sx={styles.card_container2}>

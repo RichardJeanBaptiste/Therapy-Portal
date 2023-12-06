@@ -3,17 +3,12 @@
 import {React, useState, useEffect } from 'react';
 import { TextField, Typography, Box, Button, Divider, Modal, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio  } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
-import { useRouter } from 'next/navigation'
-import img1 from "../../public/a1.jpg";
-import img2 from "../../public/a2.jpg";
-import img3 from "../../public/a3.jpg";
-import img4 from "../../public/a4.jpg";
-import img5 from "../../public/a5.jpg";
-import img6 from "../../public/a6.jpg";
-import img7 from "../../public/a7.jpg";
-import img8 from "../../public/a8.jpg";
+import { useRouter } from 'next/navigation';
+import back_img from '../../public/stock_notes.jpg';
 import Image from 'next/image';
 import axios from 'axios';
+
+//#eaf7ff
 
 const useStyles= (theme) => ({
     root: {
@@ -24,6 +19,13 @@ const useStyles= (theme) => ({
       display: 'flex',
       flexDirection: 'row'
     },
+    img: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100vh',
+      width: '850'
+    },
     login: {
       display: 'flex',
       flexDirection: 'column',
@@ -32,11 +34,11 @@ const useStyles= (theme) => ({
     login2: {
       display: 'flex',
       flexDirection: 'column',
-      width: '65%',
+      width: '35%',
       height: '60%',
-      position: 'relative',
-      top: '19%',
-      left: '21%'
+      position: 'absolute',
+      top: '10%',
+      left: '58%'
     },
     navicon: {
       position: 'absolute',
@@ -70,7 +72,6 @@ export default function Home() {
   const styles = useStyles(theme);
   const router = useRouter();
 
-  const [imgNum, SetImgNum] = useState("");
   const [open, setOpen] = useState(false);
   const [showFields, SetShowFields] = useState("none");
 
@@ -99,11 +100,6 @@ export default function Home() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-
-
-  useEffect(() => {
-    rand_img();
-  },[]);
 
   
 
@@ -251,39 +247,6 @@ export default function Home() {
 
   }
 
-  const rand_img = () => {
-    let randomInt = Math.floor(Math.random() * (8 - 1 + 1)) + 1;
-
-    switch(randomInt){
-      case 1:
-        SetImgNum(img1);
-        break;
-      case 2:
-        SetImgNum(img2);
-        break;
-      case 3:
-        SetImgNum(img3);
-        break;
-      case 4: 
-        SetImgNum(img4);
-        break;
-      case 5:
-        SetImgNum(img5);
-        break;
-      case 6:
-        SetImgNum(img6);
-        break;
-      case 7:
-        SetImgNum(img7);
-        break;
-      case 8:
-        SetImgNum(img8);
-        break;
-      default:
-        SetImgNum(img8);
-        break;
-    }
-  }
 
   return (
     <Box style={styles.root}>
@@ -331,19 +294,22 @@ export default function Home() {
 
       <Box sx={styles.root2}>
           <Image
-            src={imgNum}
+            src={back_img}
             width={850}
-            height={870}
+            height={'100vh'}
             alt="Stock Therapy Photo"
             priority={true}
+            style={styles.img}
           />
 
 
         <Box sx={styles.login}>
-          
-          <Typography variant='body1' component="p" sx={{ paddingBottom: '2.5%', fontWeight: 'Bold', fontSize: '1.75rem', marginLeft: '22%', marginTop: '10%'}}>Login to Therapy Portal</Typography>
 
           <Box sx={styles.login2}>
+
+              <p variant='body1' component="p" style={{ paddingBottom: '25%', fontWeight: 'Bold', fontSize: '1.75rem', marginLeft: '22%', marginTop: '10%'}}>
+                  Login to Therapy Portal
+              </p>
 
               <FormControl>
 
