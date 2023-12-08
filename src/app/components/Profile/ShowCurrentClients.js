@@ -11,66 +11,41 @@ import { compareDates } from '../Commons';
 
 const useStyles= (theme) => ({
     root: {
-      width: '40em',
-      height: '20em',
-      marginLeft: '4%'
-    },
-    oBox: {
-      display: 'flex',
-      flexDirection: 'row',
-      marginTop: '4%',
-      marginLeft: '5%',
-      backgroundColor: 'rgba(104,176,171, 0.1)',
-      borderRadius: '2%',
-      width: '49em',
-      height: '16em',
-    },
-    oBoxTitle: {
-      whiteSpace: 'pre-wrap',
-      marginTop: '5%',
-      marginLeft: '8%'
-    },
-    clientItem: {
-      display: 'flex',
-      flexDirection: 'row',
-      height: '40px',
       width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      
+      height: '100%',
+      overflowY: 'scroll',
+      scrollbarWidth: 'thin',
+      scrollbarColor: 'transparent transparent',
+      /* For WebKit browsers (Chrome, Safari, etc.) */
+      '&::-webkit-scrollbar': {
+          width: '0.6rem', /* Set a width for the scrollbar (WebKit) */
+      },
+      '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'transparent', /* Set thumb color to transparent (WebKit) */
+      },
     },
-  
-    title: {
-      fontSize: '1.85em',
-      marginTop: '2%',
-      marginLeft: '2%'
+    heading: {
+      textAlign: 'center',
+      paddingBottom: '1.5%'
     },
-  
-    intro: {
-      width: '85em',
-      height: '13em',
-      marginLeft: '4%',
-      backgroundColor: 'rgba(200, 213, 185, 0.5)',
-      borderRadius: '20px',
-    },
-    intro2: {
-      display: 'flex',
-      flexDirection: 'row',
+    client_item_div: {
+      width: '100%',
+      height: '20px',
       paddingBottom: '5%'
     },
-    introText: {
-      marginTop: '1%',
-      marginLeft: '2%',
-      fontSize: '1.35em'
+    client_item_p: {
+      fontSize: '1.7em',
+      marginLeft: '7%'
     },
-    dashboardItem1: {
-      display: 'flex',
-      flexDirection: 'row',
-      marginTop: '3%'
+    buttons: {
+      display:'flex', 
+      flexDirection:'row', 
+      float: 'right', 
+      marginRight: '7%'
     }
-  
-  
-  })
+})
+
+
 
 const ShowCurrentClients = (props) => {
 
@@ -132,20 +107,20 @@ const ShowCurrentClients = (props) => {
     }
 
     return (
-      <Box style={{ width: '100%', height: '100%', overflowY: 'scroll'}}>
-        <ShowClientDates open={open} clientName={clientName} dates={dates} handleClose={handleClose}/>
-        <ShowDeleteClient open2={open2} clientName={clientName} handleClose2={handleClose2} removeClient={removeClient}/>
+      <Box style={styles.root}>
+          <ShowClientDates open={open} clientName={clientName} dates={dates} handleClose={handleClose}/>
+          <ShowDeleteClient open2={open2} clientName={clientName} handleClose2={handleClose2} removeClient={removeClient}/>
 
 
-          <h2 style={{ textAlign: 'center', paddingBottom:'1.5%'}}>Clients</h2>
+          <h2 style={styles.heading}>Clients</h2>
         
           {Array.isArray(props.allClients) ? (
               props.allClients.map((x, i) => (
 
-                  <Box key={i} sx={{ width: '100%', height: '20px', paddingBottom: '5%'}}>
-                      <p style={{ fontSize: '1.7em', marginLeft: '7%' }} key={i}><u style={{ float: 'left' }}>{x}</u></p>
+                  <Box key={i} sx={styles.client_item_div}>
+                      <p style={styles.client_item_p} key={i}><u style={{ float: 'left' }}>{x}</u></p>
 
-                      <Box sx={{ display:'flex', flexDirection:'row', float: 'right', marginRight: '7%'}}>
+                      <Box sx={styles.buttons}>
                           <Tooltip title="Show Appointments" arrow>
                               <IconButton onClick={() => handleOpen(x)}>
                                   <VisibilityIcon />  
@@ -164,32 +139,10 @@ const ShowCurrentClients = (props) => {
           ) : (
               <></>
           )}
+        
       </Box>
     )
 }
 
 export default ShowCurrentClients
 
-
-/**
- * <Box key={i} sx={{ paddingBottom: '3%'}}>
-                  <Box key={i} sx={styles.clientItem}>
-                      <p style={{ fontSize: '2em' }} key={i}><u style={{ float: 'left' }}>{x}</u></p>
-
-                      <Tooltip title="Show Appointments" arrow>
-                          <IconButton onClick={() => handleOpen(x)}>
-                              <VisibilityIcon/>  
-                          </IconButton>
-                      </Tooltip>
-                      
-
-                      <Tooltip title="Remove Client" arrow>
-                          <IconButton onClick={() => handleOpen2(x)}>
-                            <CloseIcon />
-                          </IconButton>
-                      </Tooltip>
-                  </Box>
-                 
-                </Box>
- * 
- */

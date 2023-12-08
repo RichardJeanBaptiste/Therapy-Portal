@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Tooltip, IconButton, Modal, Button } from '@mui/material';
+import { Box, Tooltip, Modal } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
 import dayjs from 'dayjs';
 
@@ -17,6 +17,30 @@ const useStyles= (theme) => ({
         px: 4,
         pb: 3,
     },
+    root: {
+        width: '100%',
+        height: '100%',
+        overflowY: 'scroll',
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'transparent transparent',
+        /* For WebKit browsers (Chrome, Safari, etc.) */
+        '&::-webkit-scrollbar': {
+            width: '0.5rem', /* Set a width for the scrollbar (WebKit) */
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'transparent', /* Set thumb color to transparent (WebKit) */
+        },
+    },
+    
+    heading: {
+        textAlign: 'center',
+        paddingBottom: '4%'
+    },
+    date_p: {
+        fontSize: '1.6em',
+        textAlign: 'center',
+        cursor: 'pointer'
+    }
 })
 
 const ShowUpcomingDates = (props) => {
@@ -70,18 +94,20 @@ const ShowUpcomingDates = (props) => {
     }
 
     return (
-        <Box sx={{ width: '100%', height: '100%', overflowY: 'scroll'}}>
-            <h2 style={{ textAlign: 'center', paddingBottom: '4%'}}>Upcoming Dates</h2>
+        <Box sx={styles.root}>
+            <h2 style={styles.heading}>Upcoming Dates</h2>
             <DisplayItem open={open} handleClose={handleClose} title={title} clients={clients}/>
             {Array.isArray(upcoming) ? (
 
                 upcoming.map((x, i) => (
                     <Box key={i}>
-                        <p style={{ fontSize: '1.6em', textAlign: 'center', cursor:'pointer'}} 
-                            onClick={() => handleOpen(Object.keys(x)[0], x[Object.keys(x)[0]])}
-                        >
-                            <u>{dayjs(Object.keys(x)[0]).format('ddd, DD MMM YYYY')}</u>
-                        </p>
+                        <Tooltip title={`Show Clients for: ${Object.keys(x)[0]}`} arrow>
+                            <p style={styles.date_p} 
+                                onClick={() => handleOpen(Object.keys(x)[0], x[Object.keys(x)[0]])}
+                            >
+                                <u>{dayjs(Object.keys(x)[0]).format('ddd, DD MMM YYYY')}</u>
+                            </p>
+                        </Tooltip>  
                     </Box>
               ))
             ) : (
@@ -93,23 +119,3 @@ const ShowUpcomingDates = (props) => {
 
 export default ShowUpcomingDates;
 
-
-
-            // if(Array.isArray(upcoming)){
-        //     upcoming.map((x) => {
-        //         let key = Object.keys(x)[0]; // title
-        //         let clients = x[key]; // clients array
-                
-        //         console.log(key); 
-
-        //         clients.map((y) => {
-        //             let clientname = y[0];
-        //             let clienttime = y[1];
-        //             let duration = y[2];
-                    
-        //             console.log(`${clientname} --- ${clienttime} --- ${duration}`);
-        //         })
-
-        //         console.log("================================================");
-        //     })
-        // }

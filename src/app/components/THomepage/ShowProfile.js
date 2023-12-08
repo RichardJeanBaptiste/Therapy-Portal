@@ -1,14 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, {useState, useEffect} from 'react';
-import { Box, Typography, IconButton, Modal, Button, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import Image from 'next/image';
-import catImg from  "../../../../public/p1.png";
 import ShowCurrentClients from '../Profile/ShowCurrentClients';
 import ShowUpcomingDates from '../Profile/ShowUpcomingDates';
-import { compareDates } from '../Commons';
+import { compareDates, sortDates } from '../Commons';
 
 const useStyles= (theme) => ({
   root: {
@@ -77,7 +75,7 @@ const useStyles= (theme) => ({
     height: '27em',
     backgroundColor: 'rgba(250, 243, 221, 1)',
     borderRadius: '20px',
-    marginTop: '3%',
+    marginTop: '-1%',
     marginLeft: '10%'
   },
   showClientsContainer2: {
@@ -86,7 +84,7 @@ const useStyles= (theme) => ({
     backgroundColor: 'rgba(250, 243, 221, 1)',
     borderRadius: '20px',
     marginLeft: '5%',
-    marginTop: '3%'
+    marginTop: '-1%'
   }
 
 
@@ -113,23 +111,14 @@ export default function ShowProfile(props) {
     .then(function (response) {
 
       let allKeys = response.data.scheduled.map(item => {
-
         let parsed = dayjs(Object.keys(item)[0]);
 
         if(parsed.isAfter(dayjs())){
           return Object.keys(item)[0];
         };
       });
-
-      let sortedKeys = allKeys.sort((date1, date2) => {
-        const dayjsDate1 = dayjs(date1);
-        const dayjsDate2 = dayjs(date2);
-
-        // Compare dates using the diff method
-        return dayjsDate1.diff(dayjsDate2);
-      })
-
-
+ 
+      let sortedKeys = allKeys.sort(sortDates);
       let sortedDates = response.data["available"].sort(compareDates);
 
       //console.log(sortedKeys);
@@ -138,7 +127,6 @@ export default function ShowProfile(props) {
       SetAllClients(response.data["clients"]);
       SetDatesScheduled(response.data["scheduled"]);
       SetProfileInfo(response.data);
-
     })
     .catch(function (error) {
         console.log(error);
@@ -155,11 +143,11 @@ export default function ShowProfile(props) {
                 <Box sx={styles.introText}>
                   <p>Welcome, <span style={{ fontWeight: 'bold'}}><u>{name}</u></span>
                     <br/>
-                    Today's Date: <span><u>{date}</u></span>
-                    <br/>
-                    Upcoming Appointment: <span><u>{upcomingDate}</u></span> 
+                    <p style={{ paddingTop: '.35%'}}>Today's Date: <u>{date}</u></p>
+                    
+                    <p style={{ paddingTop: '.35%'}}>Upcoming Appointment: <u>{upcomingDate}</u></p>
                   </p>
-              </Box>
+                </Box>
 
               <Box>
                 {/************ Image  ***********/}
@@ -176,44 +164,7 @@ export default function ShowProfile(props) {
               </Box>
             </Box>
             
-        </Box>
-      
-      
+        </Box>  
     </>
   )
 }
-
-/***
- *  
-            <Box sx={styles.dashboardItem1}>
-                <ShowCurrentClients datesScheduled={datesScheduled} username={props.username} allClients={allClients} info={props.info}/>
-
-            </Box> 
- * 
- * <Typography variant="h5" component="h5"sx={{ marginLeft: '3%'}}>Overview</Typography>
-
-          <Box sx={styles.oBox}>
-              <Image
-                src={catImg}
-                width={200}
-                height={200}
-                alt="Stock Therapy Photo"
-              />
-
-              <Typography sx={styles.oBoxTitle}>Welcome, {name} 
-                {"\n"}Today's Date: {date}
-                {"\n"}Upcoming Appointment: {upcomingDate}
-              </Typography>
-          </Box>
-
-          <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-            <ShowClients/>
-            <Box sx={{ marginLeft: '5%'}}>
-              <ShowDatesAvailable availableDates={availableDates}/>
-            </Box>
-          </Box>
-  * 
- * 
- * 
- * 
- */

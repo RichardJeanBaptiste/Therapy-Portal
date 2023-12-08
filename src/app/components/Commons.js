@@ -13,4 +13,11 @@ const compareDates = (date1, date2) => {
     }
 };
 
-module.exports = { compareDates };
+const sortDates = (date1, date2) => {
+  const dayjsDate1 = dayjs(date1);
+  const dayjsDate2 = dayjs(date2);
+
+  return dayjsDate1.diff(dayjsDate2);
+}
+
+module.exports = { compareDates, sortDates };
