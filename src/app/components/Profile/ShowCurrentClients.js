@@ -7,7 +7,7 @@ import ShowClientDates from './ShowClientDates';
 import ShowDeleteClient from './ShowDeleteClient';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { compareDates, sortNames } from '../Commons';
+import { compareDates, sortNames } from '../util.js';
 
 const useStyles= (theme) => ({
     root: {
@@ -104,6 +104,7 @@ const ShowCurrentClients = (props) => {
       })
       .then(function (response) {
           alert(`${clientName} deleted from client list`)
+          props.refetch();
           handleClose2();
       })
       .catch(function (error) {

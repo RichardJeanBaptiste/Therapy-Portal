@@ -62,6 +62,7 @@ export async function POST(request){
                 }
             }
 
+            dates = dates.filter(dateItem => Object.values(dateItem)[0].length > 0);
             
             // Empty Array
             userQuery.DatesScheduled = [{}];
@@ -91,25 +92,3 @@ export async function POST(request){
 }
 
        
-
-        /**
-         * Find Index
-         * Find Date
-         * Find Nested Index
-         */
-        // await therapists.findOneAndUpdate(
-        //     { Username: queryUsername },
-        //     { $unset: {"DatesScheduled.0.Wed Nov 22 2023 00:00:00 GMT-0500 (Eastern Standard Time).0": 0}},
-        //     { $pull: {"DatesScheduled.0.Wed Nov 22 2023 00:00:00 GMT-0500 (Eastern Standard Time)": null}},
-        //     { new: true } // This option returns the modified document
-        // )
-        // .then(updatedDocument => {
-        //     if (updatedDocument) {
-        //         console.log('Item removed:', updatedDocument);
-        //     } else {
-        //         console.log('Document not found.');
-        //     }
-        // })
-        // .catch(error => {
-        //     console.error('Error:', error);
-        // });

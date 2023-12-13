@@ -21,7 +21,7 @@ export async function POST(request){
             return NextResponse.json({ "msg": "Therapist not found"})
         } else {
             
-            let res = { "username" : userQuery.Username, "clients" : userQuery.Clients, "scheduled" : userQuery.DatesScheduled, "available": userQuery.DatesAvailable};
+            let res = { "username" : userQuery.Username, "clients" : userQuery.Clients, "scheduled" : userQuery.DatesScheduled, "available": userQuery.DatesAvailable, "info": userQuery.Info};
             return NextResponse.json(res);
         }
 

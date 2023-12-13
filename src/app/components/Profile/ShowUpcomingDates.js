@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Tooltip, Modal } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
-import { compareDateKeys } from '../Commons';
+import { compareDateKeys } from '../util';
 import dayjs from 'dayjs';
 
 const useStyles= (theme) => ({
@@ -56,9 +56,6 @@ const ShowUpcomingDates = (props) => {
                 upcomingDates.push(x);
             };
         })
-
-        
-        
 
         SetUpcoming(upcomingDates);
     },[props.upcomingDates]); 

@@ -22,8 +22,10 @@ export async function POST(request){
             $set: {
                 "Info.0.Name": queryInfo.Name,
                 "Info.0.Age": queryInfo.Age,
-                "Info.0.Specialty": queryInfo.Specialty,
-                "Info.0.Bio": queryInfo.Bio
+                "Info.0.Speciality": queryInfo.Speciality, 
+                "Info.0.Education": queryInfo.Education,
+                "Info.0.Bio": queryInfo.Bio,
+                "Info.0.YearsWorking": queryInfo.YearsWorking
             }
         }
 
