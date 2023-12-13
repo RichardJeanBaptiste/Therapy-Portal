@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Typography, Box, Button, IconButton, Tooltip, Modal, TextField } from '@mui/material';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { Box } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
-import axios from 'axios';
 import './Calendar.css';
 import { getMonth } from '../util';
 import CalenderHeader from '../Calender/CalenderHeader';

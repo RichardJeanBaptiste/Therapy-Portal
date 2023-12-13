@@ -100,7 +100,7 @@ const ShowUpcomingDates = (props) => {
     return (
         <Box sx={styles.root}>
             <h2 style={styles.heading}>Upcoming Dates</h2>
-            <DisplayItem open={open} handleClose={handleClose} title={title} clients={clients}/>
+            <DisplayItem open={open} handleClose={handleClose} title={dayjs(title).format('ddd, DD MMM YYYY')} clients={clients}/>
             {Array.isArray(upcoming) ? (
 
                 upcoming.map((x, i) => (

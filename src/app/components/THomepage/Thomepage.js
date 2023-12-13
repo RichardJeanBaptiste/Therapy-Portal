@@ -56,6 +56,7 @@ export default function Thomepage(props) {
   const router = useRouter();
   const [displayName, SetDisplayName] = useState("Profile");
   const [profileInfo, SetProfileInfo] = useState([]);
+  const [profName, SetProfName] = useState("");
   const [authToken, SetAuthToken] = useState(null);
   const [upcomingDate, SetUpcomingDate] = useState("");
   const [allClients, SetAllClients] = useState([]);
@@ -68,7 +69,6 @@ export default function Thomepage(props) {
 
   /// Fetch Initial Data
   useEffect(() => {
-    
     axios.post('/api/therapist/dashboard', {
       username: props.info[1],
     })
@@ -89,6 +89,7 @@ export default function Thomepage(props) {
       SetUpcomingDate(dayjs(sortedKeys[0]).format('ddd, DD MMM YYYY'));
       SetDatesScheduled(response.data["scheduled"]);
       SetProfileInfo(response.data["info"]);
+      SetProfName(response.data["info"][0]["Name"]);
     })
     .catch(function (error) {
         console.log(error);
@@ -96,9 +97,6 @@ export default function Thomepage(props) {
   },[props.info]);
 
   const reFetch = () => {
-
-    console.log("refetch");
-
     axios.post('/api/therapist/dashboard', {
       username: props.info[1],
     })
@@ -111,7 +109,6 @@ export default function Thomepage(props) {
         };
       });
       
-      
       let sortedKeys = allKeys.sort(compareDates);
       let sortedDates = response.data["available"].sort(compareDates);
       
@@ -120,6 +117,7 @@ export default function Thomepage(props) {
       SetAllClients(response.data["clients"]);
       SetDatesScheduled(response.data["scheduled"]);
       SetProfileInfo(response.data["info"]);
+      SetProfName(response.data["info"][0]["Name"]);
     })
     .catch(function (error) {
         console.log(error);
@@ -134,7 +132,7 @@ export default function Thomepage(props) {
     
     if(displayName === "Profile"){
       return (
-        <ShowProfile info={props.info} username={props.info[1]} upcomingDate={upcomingDate} datesScheduled={datesScheduled} allClients={allClients} refetch={reFetch}/>
+        <ShowProfile info={props.info} name={profName} username={props.info[1]} upcomingDate={upcomingDate} datesScheduled={datesScheduled} allClients={allClients} refetch={reFetch}/>
       )
     } else if(displayName === "Calender") {
       return (

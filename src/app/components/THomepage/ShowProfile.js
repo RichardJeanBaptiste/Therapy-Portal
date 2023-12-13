@@ -89,7 +89,7 @@ export default function ShowProfile(props) {
 
   const theme = useTheme();
   const styles = useStyles(theme);
-  const name = props.info[2].replace(new RegExp("%20", 'g'), " ");
+  //const name = props.info[2].replace(new RegExp("%20", 'g'), " ");
   const date = new Date().toDateString();
 
 
@@ -99,7 +99,7 @@ export default function ShowProfile(props) {
         <Box sx={styles.intro}>
             <Box sx={styles.intro2}>
                 <Box sx={styles.introText}>
-                  <p>Welcome, <span style={{ fontWeight: 'bold'}}><u>{name}</u></span>
+                  <p>Welcome, <span style={{ fontWeight: 'bold'}}><u>{props.name}</u></span>
                     <br/>
                     <p style={{ paddingTop: '.35%'}}>Today's Date: <u>{date}</u></p>
                     
@@ -126,3 +126,8 @@ export default function ShowProfile(props) {
     </>
   )
 }
+
+/**
+ * 
+ * 
+ */

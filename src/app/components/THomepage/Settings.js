@@ -52,7 +52,10 @@ export default function Settings(props){
       }
     })
     .then(function (response) {
-      console.log(response.data);
+      //console.log(response.data);
+      if(response.status === 200) {
+        alert("Info Saved");
+      }
     })
     .catch(function (error) {
         console.log(error);
@@ -70,7 +73,7 @@ export default function Settings(props){
 
   return (
     <Box>
-        <h2>Settings</h2>
+        <h2 style={{ marginLeft: '2%'}}>Settings</h2>
         <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '3%'}}>
           <TextField sx={{ width: '24em'}} id="outlined-basic" label="Name" variant="outlined" value={name} onChange={handleName}/>
           <TextField sx={{marginTop: '2%', width: '24em'}} id="outlined-basic" label="Age" variant="outlined" value={age} onChange={handleAge}/>

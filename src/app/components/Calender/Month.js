@@ -54,15 +54,9 @@ const useStyles= (theme) => ({
     },
     inputField: {
         display: 'none',
-        // width: '4%',
-        // height: '4%',
-        // marginTop: '2%'
     },
     inputField2: {
         display: 'block',
-        // width: '4%',
-        // height: '4%',
-        // marginTop: '2%'
     },
     modalButtons: {
         display: 'flex',
@@ -77,7 +71,6 @@ export default function Month({month,username}) {
     const theme = useTheme();
     const styles = useStyles(theme);
     const [ activeDate, SetActiveDate] = useState("");
-    //const [ showClientField, SetShowClient] = useState(false);
     const [ currentClient, SetClient] = useState("");
     const [ currentClients, SetCurrentClients] = useState([""]);
     const [ currentTime, SetCurrentTime] = useState("");
@@ -179,8 +172,6 @@ export default function Month({month,username}) {
         })
         .then(function (response) {
             alert(response.data.msg);
-            //SetCurrentClients(response.data.msg);
-            //SetShowClient("none");
             SetClient("");
         })
         .catch(function (error) {

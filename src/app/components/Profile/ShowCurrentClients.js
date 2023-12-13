@@ -16,13 +16,6 @@ const useStyles= (theme) => ({
       overflowY: 'scroll',
       scrollbarWidth: 'thin',
       scrollbarColor: 'transparent transparent',
-      /* For WebKit browsers (Chrome, Safari, etc.) */
-      '&::-webkit-scrollbar': {
-          width: '0.6rem', /* Set a width for the scrollbar (WebKit) */
-      },
-      '&::-webkit-scrollbar-thumb': {
-          backgroundColor: 'transparent', /* Set thumb color to transparent (WebKit) */
-      },
     },
     heading: {
       textAlign: 'center',

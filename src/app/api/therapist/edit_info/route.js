@@ -32,7 +32,7 @@ export async function POST(request){
         await therapists.findOneAndUpdate(filter, update);
         
         mongoose.disconnect();
-        return NextResponse.json({ "msg": `${queryUsername}: Info Updated`});
+        return NextResponse.json({ "msg": `${queryUsername}: Info Updated`}, {status: 200});
 
     } catch (error) {
         mongoose.disconnect();
