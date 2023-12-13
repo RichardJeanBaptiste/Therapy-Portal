@@ -188,8 +188,6 @@ export default function Home() {
     axios.post('/api/register', data)
     .then(function (response) {
 
-      console.log(response.data.msg);
-
       if(response.data.msg === "Account Created"){
         alert("Account Created");
         handleClose();
@@ -228,6 +226,8 @@ export default function Home() {
         let id = response.data.msg[0];
         let user = response.data.msg[1];
         let name = response.data.msg[2];
+
+        localStorage.setItem('jwtToken', response.data.msg[3]);
 
         let route = `${id}-${user}-${name}`;
         

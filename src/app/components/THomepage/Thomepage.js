@@ -3,6 +3,7 @@
 import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import { useTheme }  from '@mui/material/styles';
+import Button  from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -12,6 +13,8 @@ import ShowProfile from './ShowProfile';
 import ShowCalender from './ShowCalender';
 import ShowClients from './ShowClients';
 import ContextWrapper from '../Calender/ContextWrapper';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link'
 
 const useStyles= (theme) => ({
   root: {
@@ -47,7 +50,10 @@ export default function Thomepage(props) {
 
   const theme = useTheme();
   const styles = useStyles(theme);
+  const router = useRouter();
   const [ displayName, SetDisplayName ] = useState("Profile");
+
+
 
   const Display = () => {
 
@@ -70,10 +76,34 @@ export default function Thomepage(props) {
     }
   }
 
+  const isAuthenticated = () => {
+    // Check if the user is authenticated (e.g., by checking the presence of a token)
+    const token = localStorage.getItem('jwtToken');
+    
+    if(!!token){
+      // do nothing
+    } else {
+      console.log("logout");
+    }
+    //return !!token;
+
+    return !!token;
+
+  };
+
+  const handleLogout = () => {
+    // Implement logic to delete the token (e.g., from local storage)
+    localStorage.removeItem('jwtToken');
+
+    // Redirect to the login page or any other desired location
+    router.push(`/`, { scroll: false });
+  };
+
   return (
     <ContextWrapper>      
       <Box sx={styles.root}>
         {/** Navigation */}
+        
         <Box sx={styles.nav}>
           <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
             <Tooltip title="Profile">
@@ -101,8 +131,21 @@ export default function Thomepage(props) {
           </Box>
         </Box>
 
+        <Box sx={{
+          position: 'absolute',
+          right: '1.5%',
+          top: '2%',
+          zIndex: '1'
+        }}>
+          <Button variant="text" onClick={handleLogout} size="small">Logout</Button>
+        </Box>
+
         <Box sx={styles.display_root}>
-          <Display/>
+          {isAuthenticated() ? (
+            <Display/>
+          ) : (
+            <p>You are not authenticated. Please log in: <Link href="/">click here</Link></p>
+          )}
         </Box>
         
       </Box>

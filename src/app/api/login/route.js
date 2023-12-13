@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import { therapists, clients } from '../../Schemas/UserSchemas';
-import { comparePassword } from '../Server_Functions';
-import bcrypt from 'bcrypt';
+import { comparePassword, generateToken } from '../Server_Functions';
 import 'dotenv/config';
-
 
 
 async function findUser(userQuery, queryPassword){
@@ -25,7 +23,11 @@ async function findUser(userQuery, queryPassword){
             
         } else {
 
-            let res = [ userQuery._id, userQuery.Username, userQuery.Info[0].Name];
+            // JWT Token
+            let username = userQuery.Username;
+            const token = generateToken({ username });
+
+            let res = [ userQuery._id, userQuery.Username, userQuery.Info[0].Name, token];
             mongoose.disconnect();
             return NextResponse.json({ msg: res}, {status: 200})
         }   
@@ -37,7 +39,6 @@ export async function POST(request) {
     try {
 
         await mongoose.connect(process.env.MONGO_URI);
-
         let data = await request.json();
 
         let queryUsername = data.username;
