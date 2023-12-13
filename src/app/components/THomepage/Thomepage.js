@@ -7,11 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import SettingsIcon from '@mui/icons-material/Settings';
 import ShowProfile from './ShowProfile';
 import ShowCalender from './ShowCalender';
 import ShowClients from './ShowClients';
-import { PanoramaSharp } from '@mui/icons-material';
 import ContextWrapper from '../Calender/ContextWrapper';
 
 const useStyles= (theme) => ({
@@ -90,14 +89,13 @@ export default function Thomepage(props) {
                   <CalendarMonthIcon fontSize='inherit'/>
               </IconButton>
             </Tooltip>
-            
           </Box>
             
 
           <Box sx={{ paddingBottom: '5rem'}}>
-            <Tooltip title="Clients">
+            <Tooltip title="Settings">
               <IconButton sx={{fontSize: '3rem'}}>
-                  <PeopleAltIcon fontSize='inherit'/>
+                  <SettingsIcon fontSize='inherit'/>
               </IconButton>
             </Tooltip>
           </Box>

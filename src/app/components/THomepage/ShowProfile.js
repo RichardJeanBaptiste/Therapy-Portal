@@ -105,6 +105,7 @@ export default function ShowProfile(props) {
 
 
   useEffect(() => {
+    console.log(props.username);
     axios.post('/api/therapist/dashboard', {
       username: props.username
     })

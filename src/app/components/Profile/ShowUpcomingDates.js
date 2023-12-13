@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Tooltip, Modal } from '@mui/material';
 import { useTheme }  from '@mui/material/styles';
+import { compareDateKeys } from '../Commons';
 import dayjs from 'dayjs';
 
 const useStyles= (theme) => ({
@@ -21,15 +22,6 @@ const useStyles= (theme) => ({
         width: '100%',
         height: '100%',
         overflowY: 'scroll',
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'transparent transparent',
-        /* For WebKit browsers (Chrome, Safari, etc.) */
-        '&::-webkit-scrollbar': {
-            width: '0.5rem', /* Set a width for the scrollbar (WebKit) */
-        },
-        '&::-webkit-scrollbar-thumb': {
-            backgroundColor: 'transparent', /* Set thumb color to transparent (WebKit) */
-        },
     },
     
     heading: {
@@ -53,7 +45,22 @@ const ShowUpcomingDates = (props) => {
     const [clients, SetClients] = useState([]);
     
     useEffect(() => {
-        SetUpcoming(props.upcomingDates);
+        let temp = props.upcomingDates.sort(compareDateKeys);
+        let upcomingDates = [];
+
+        temp.map((x) => {
+
+            let parsed = dayjs(Object.keys(x)[0]);
+
+            if(parsed.isAfter(dayjs())){
+                upcomingDates.push(x);
+            };
+        })
+
+        
+        
+
+        SetUpcoming(upcomingDates);
     },[props.upcomingDates]); 
 
     const handleOpen = (currentTitle , clients) => {

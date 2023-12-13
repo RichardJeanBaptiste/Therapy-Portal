@@ -24,7 +24,11 @@ export default function Day({day, rowIdx}) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            height: '100%'
+            height: '100%',
+            '&:hover': {
+                backgroundColor: 'lightblue',
+                cursor: 'pointer'
+            },
         }}>
             <header sx={{ display:'flex', flexDirection: 'column', alignItems: 'center'}}>
                 {rowIdx === 0 && (

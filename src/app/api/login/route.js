@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
+import { therapists, clients } from '../../Schemas/UserSchemas';
+import { comparePassword } from '../Server_Functions';
+import bcrypt from 'bcrypt';
 import 'dotenv/config';
-import { User, therapists, clients } from '../../Schemas/UserSchemas';
 
-async function findUser(userQuery, queryUsername, queryPassword){
+
+
+async function findUser(userQuery, queryPassword){
 
     if(userQuery === null){
 
@@ -12,7 +16,9 @@ async function findUser(userQuery, queryUsername, queryPassword){
 
     } else {
 
-        if(userQuery.Password !== queryPassword){
+        let checkPassword = await comparePassword(queryPassword, userQuery.Password);
+
+        if(!checkPassword){
 
             mongoose.disconnect();
             return NextResponse.json({ msg: 'User not found'}, {status: 404})
@@ -36,7 +42,6 @@ export async function POST(request) {
 
         let queryUsername = data.username;
         let queryPassword = data.password;
-        //let queryRole = data.role;
 
 
         let query = therapists.where({ Username: queryUsername});
@@ -49,23 +54,8 @@ export async function POST(request) {
             return findUser(clientQuery, queryUsername, queryPassword);
 
         } else {
-            return findUser(userQuery, queryUsername, queryPassword);
+            return findUser(userQuery, queryPassword);
         }
-
-        // if(queryRole === "Therapist"){
-
-        //     let query = therapists.where({ Username: queryUsername});
-        //     let userQuery = await query.findOne();
-
-        //     return findUser(userQuery, queryUsername, queryPassword);
-        // } else if(queryRole === "Client") {
-        //     let query = clients.where({ Username: queryUsername});
-        //     let userQuery = await query.findOne();
-
-        //     return findUser(userQuery, queryUsername, queryPassword);
-        // } else {
-        //     return NextResponse.json({ msg: 'Role not chosen'}, {status: 404})
-        // }
                 
     } catch (error) {
         console.log(error);

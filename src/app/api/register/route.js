@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import mongoose from 'mongoose';
 import 'dotenv/config';
 import { therapists, clients } from '../../Schemas/UserSchemas';
+import { hashPassword } from '../Server_Functions';
 
 
 export async function POST(request) {
@@ -9,6 +10,10 @@ export async function POST(request) {
     try {
         await mongoose.connect(process.env.MONGO_URI);
         let x = await request.json();
+
+        
+        const hashedPassword = await hashPassword({ password: x.password});
+        //console.log('Hashed Password:', hashedPassword);
 
         if(x.role === "Therapist"){
 
@@ -19,7 +24,7 @@ export async function POST(request) {
 
                 let newTherapist = new therapists({
                     Username: x.username,
-                    Password: x.password,
+                    Password: hashedPassword,
                     Role: x.role,
                     DatesAvailable: [],
                     Clients: [],
@@ -51,7 +56,7 @@ export async function POST(request) {
 
                 let newClient = new clients({
                     Username: x.username,
-                    Password: x.password,
+                    Password: hashPassword,
                     Role: x.role,
                     DatesReserved: [],
                     Therapists: [],

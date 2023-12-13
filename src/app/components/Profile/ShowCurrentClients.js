@@ -7,7 +7,7 @@ import ShowClientDates from './ShowClientDates';
 import ShowDeleteClient from './ShowDeleteClient';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { compareDates } from '../Commons';
+import { compareDates, sortNames } from '../Commons';
 
 const useStyles= (theme) => ({
     root: {
@@ -54,7 +54,8 @@ const ShowCurrentClients = (props) => {
     const [clientName, SetClientName] = useState("");
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
-    const [ dates, SetDates] = useState([]);
+    const [dates, SetDates] = useState([]);
+    const [allClients, SetAllClients] = useState([]);
 
     const handleOpen = (name) => {
       SetClientName(name);
@@ -71,6 +72,10 @@ const ShowCurrentClients = (props) => {
     const handleClose2 = () => setOpen2(false);
 
     const name = props.info[2].replace(new RegExp("%20", 'g'), " ");
+
+    useEffect(() => {
+      SetAllClients(props.allClients.sort(sortNames));
+    },[props.allClients])
 
 
     useEffect(() => {
@@ -114,8 +119,8 @@ const ShowCurrentClients = (props) => {
 
           <h2 style={styles.heading}>Clients</h2>
         
-          {Array.isArray(props.allClients) ? (
-              props.allClients.map((x, i) => (
+          {Array.isArray(allClients) ? (
+              allClients.map((x, i) => (
 
                   <Box key={i} sx={styles.client_item_div}>
                       <p style={styles.client_item_p} key={i}><u style={{ float: 'left' }}>{x}</u></p>
