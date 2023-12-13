@@ -41,9 +41,9 @@ const useStyles= (theme) => ({
   },
   display_root: {
     position: 'absolute',
-    left: '5%',
+    left: '4.7%',
     top: '0%',
-    width: '103.65em',
+    width: '114.3em',
     height: '100%',
     backgroundColor: 'rgba(112, 101, 99, 0.1)',
   }
@@ -73,7 +73,6 @@ export default function Thomepage(props) {
       username: props.info[1],
     })
     .then(function (response) {
-      //console.log(response.data);
       let allKeys = response.data.scheduled.map(item => {
         let parsed = dayjs(Object.keys(item)[0]);
 
@@ -82,7 +81,7 @@ export default function Thomepage(props) {
         };
       });
 
-      let sortedKeys = allKeys.sort(compareDateKeys);
+      let sortedKeys = allKeys.sort(sortDates);
       let sortedDates = response.data["available"].sort(compareDates);
       
       SetAvailableDates(sortedDates);
@@ -97,11 +96,13 @@ export default function Thomepage(props) {
   },[props.info]);
 
   const reFetch = () => {
+
+    console.log("refetch");
+
     axios.post('/api/therapist/dashboard', {
-      username: props.username
+      username: props.info[1],
     })
     .then(function (response) {
-
       let allKeys = response.data.scheduled.map(item => {
         let parsed = dayjs(Object.keys(item)[0]);
 
@@ -109,10 +110,10 @@ export default function Thomepage(props) {
           return Object.keys(item)[0];
         };
       });
- 
-      let sortedKeys = allKeys.sort(compareDateKeys);
+      
+      
+      let sortedKeys = allKeys.sort(compareDates);
       let sortedDates = response.data["available"].sort(compareDates);
-
       
       SetAvailableDates(sortedDates);
       SetUpcomingDate(dayjs(sortedKeys[0]).format('ddd, DD MMM YYYY'));
@@ -146,6 +147,11 @@ export default function Thomepage(props) {
     }
   }
 
+  const switchToProfile = () => {
+    reFetch();
+    SetDisplayName("Profile")
+  }
+
   const isAuthenticated = () => {
     // Check if the user is authenticated (e.g., by checking the presence of a token)
     //const token = localStorage.getItem('jwtToken');
@@ -166,7 +172,7 @@ export default function Thomepage(props) {
         <Box sx={styles.nav}>
           <Box sx={{ paddingBottom: '5rem', paddingTop: '5rem'}}>
             <Tooltip title="Profile">
-              <IconButton sx={{ fontSize: '3rem'}} onClick={() => SetDisplayName("Profile")}>
+              <IconButton sx={{ fontSize: '3rem'}} onClick={switchToProfile}>
                   <AccountBoxIcon fontSize='inherit'/>
               </IconButton>
             </Tooltip>

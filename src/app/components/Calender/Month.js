@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import { Box, Button, Modal, Typography, TextField, Divider, List, ListItem} from '@mui/material';
+import { Box, Button, Modal, Typography, TextField, Divider } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { TimeField } from '@mui/x-date-pickers/TimeField';
 import Day from './Day';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -151,7 +150,6 @@ export default function Month({month,username}) {
     }
 
     const cancelClientField = () => {
-        //SetShowClient(false);
         SetExpandModal(false);
         SetClient("");
     }
@@ -279,34 +277,3 @@ export default function Month({month,username}) {
         
     )
 }
-
-/**
- *      <Box sx={styles.modalButtons}>
-                                <Button onClick={makeDateAvailable}>Add Availability</Button>
-                                <Button onClick={showClient}>Add Client</Button>
-                                    <TextField id="outlined-basic" label="client name" variant="outlined" sx={handleInputField} onChange={handleClientField}/>
-                                    <Box sx={{ display: showClientField}}>
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <TimePicker label="Time" onChange={(value) => SetCurrentTime(value)}/>
-                                        </LocalizationProvider>
-
-                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <TimePicker  label="Duration" views={['minutes', 'seconds']} format="mm:ss" onChange={(value) => SetCurrentDuration(value)}/>
-                                        </LocalizationProvider>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-                                        <Button onClick={cancelClientField} sx={handleInputField}>Cancel</Button>
-                                        <Button onClick={AddClient} sx={handleInputField}>Confirm</Button>
-                                    </Box>
-                                <Button onClick={handleClose}>Cancel</Button>
-        </Box>
-
-                            <Divider orientation="vertical" flexItem />
-
-                            <Box sx={{ display: 'flex', flexDirection: 'column', marginLeft: '9%'}}>
-                                <Typography>Scheduled</Typography>
-                                <ShowScheduledClients/>
-                            </Box>
- * 
- * 
- */

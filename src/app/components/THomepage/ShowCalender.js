@@ -16,7 +16,7 @@ const useStyles= (theme) => ({
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
-      marginLeft: '2%',
+      marginLeft: '0%',
     }
 })
 

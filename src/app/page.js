@@ -73,10 +73,10 @@ export default function Home() {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
-  const [showFields, SetShowFields] = useState("none");
+  const [showFields, SetShowFields] = useState("block");
 
   /****************************** Register States ****************************/
-  const [regRole, SetRegRole] = useState(null);
+  const [regRole, SetRegRole] = useState("Therapist");
   const [regUsername, SetRegUsername] = useState("");
   const [regPassword, SetRegPassword] = useState("");
   const [passMatch, SetPassMatch] = useState("primary");
@@ -160,29 +160,39 @@ export default function Home() {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    let data;
+    // if(regRole === "Therapist"){
+    //   data = {
+    //     username: regUsername,
+    //     password: regPassword,
+    //     role: regRole,
+    //     name: regName,
+    //     age: regAge,
+    //     bio: regBio,
+    //     specialty: regSpecialty,
+    //     education: regEducation,
+    //     yearsWorking: regYearsWorking
+    //   }
+    // } else {
+    //   data = {
+    //     username: regUsername,
+    //     password: regPassword,
+    //     role: regRole,
+    //     name: regName,
+    //     age: regAge,
+    //     bio: regBio
+    //   }
+    // }
 
-    if(regRole === "Therapist"){
-      data = {
-        username: regUsername,
-        password: regPassword,
-        role: regRole,
-        name: regName,
-        age: regAge,
-        bio: regBio,
-        specialty: regSpecialty,
-        education: regEducation,
-        yearsWorking: regYearsWorking
-      }
-    } else {
-      data = {
-        username: regUsername,
-        password: regPassword,
-        role: regRole,
-        name: regName,
-        age: regAge,
-        bio: regBio
-      }
+    let data = {
+      username: regUsername,
+      password: regPassword,
+      role: regRole,
+      name: regName,
+      age: regAge,
+      bio: regBio,
+      specialty: regSpecialty,
+      education: regEducation,
+      yearsWorking: regYearsWorking
     }
 
     axios.post('/api/register', data)
@@ -260,31 +270,19 @@ export default function Home() {
         <Box sx={styles.modalStyle}>
           <Typography id="modal-modal-title" variant="h6" component="h2">Register</Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              <form style={{ height: '35em', overflowY: 'scroll' }}>
-                <FormControl>
-                  <FormLabel id="demo-row-radio-buttons-group-label">Role</FormLabel>
-                      <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        defaultValue="Client"
-                      >
-                        <FormControlLabel value="Therapist" control={<Radio value="Therapist" onChange={handleRegRole}/>} label="Therapist"/>
-                        <FormControlLabel value="Client" control={<Radio value="Client" onChange={handleRegRole}/>} label="Client" />
-                      </RadioGroup>
-                  </FormControl>
-                  <TextField id="reg_username"  label="Username" variant="outlined"  fullWidth required sx={{ paddingBottom: '2.5%'}} onChange={handleRegUsername}/>
+              <form style={{ height: '35em', overflowY: 'scroll' }} onSubmit={handleRegister}>
+                  <TextField id="reg_username"  label="Username" variant="outlined"  fullWidth required={true} sx={{ paddingBottom: '2.5%'}} onChange={handleRegUsername}/>
                   <TextField id="reg_password"  type="password" label="Password" variant="outlined"  fullWidth required sx={{ paddingBottom: '2.5%'}} onChange={handleRegPassword}/>
                   <TextField id="reg_password2" type="password" label="Re-enter" variant="outlined" fullWidth color={passMatch} required sx={{ paddingBottom: '2.5%'}} onChange={handlePasswordCheck}/>
                   <TextField id="name"  label="Name" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegName}/>
                   <TextField id="age" label="Age" variant="outlined" fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegAge}/>
                   <TextField id="bio"  label="Bio" variant="outlined"  multiline maxRows={4} fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegBio}/>
-                  <Box sx={{ display: showFields}}>
+                  <Box sx={{ display: "block"}}>
                       <TextField id="specialty"  label="Specialty" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleSpecialty}/>
                       <TextField id="education"  label="Education" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleRegEducation}/>
                       <TextField id="years_working"  label="Years Working" variant="outlined"   fullWidth sx={{ paddingBottom: '2.5%'}} onChange={handleYearsWorking}/>
                   </Box>
-                  <Button type="submit" variant="outlined" onClick={handleRegister}>Register</Button>
+                  <Button type="submit" variant="outlined">Register</Button>
               </form>
           </Typography>
         </Box>
@@ -328,8 +326,7 @@ export default function Home() {
                 </Box>
 
               </FormControl>
-              
-              
+  
           </Box>
         </Box>
       </Box>

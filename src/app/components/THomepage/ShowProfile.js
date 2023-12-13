@@ -114,7 +114,7 @@ export default function ShowProfile(props) {
 
             <Box sx={{ display: 'flex', flexDirection: 'row'}}>
               <Box sx={styles.showClientsContainer}>
-                <ShowCurrentClients refetch={props.reFetch} datesScheduled={props.datesScheduled} username={props.username} allClients={props.allClients} info={props.info}/>
+                <ShowCurrentClients refetch={props.refetch} datesScheduled={props.datesScheduled} username={props.username} allClients={props.allClients} info={props.info}/>
               </Box>
 
               <Box sx={styles.showClientsContainer2}>
